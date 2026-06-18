@@ -1,0 +1,285 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Data publication – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Data publication</h1>
+    <p class="govuk-body">Select a checking window and source data file to begin the publication process.</p>
+
+    <form method="post" action="/admin-publication">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+      {# ── SECTION 1: Select checking window ── #}
+      {{ govukRadios({
+        idPrefix: "checkingWindow",
+        name: "checkingWindow",
+        fieldset: {
+          legend: {
+            text: "1. Select a checking window",
+            classes: "govuk-fieldset__legend--m"
+          }
+        },
+        items: [
+          { value: "KS4-JUNE-2026",   text: "KS4 June",   id: "window-ks4-june",   attributes: { "data-container": "lds-incoming-ks4june2026" } },
+          { value: "KS4-AUTUMN-2026", text: "KS4 Autumn", id: "window-ks4-autumn", attributes: { "data-container": "lds-incoming-ks4autumn2026" } },
+          { value: "KS2-2026",        text: "KS2",        id: "window-ks2",        attributes: { "data-container": "lds-incoming-ks22026" } },
+          { value: "16-18-2026",      text: "16-18",      id: "window-16-18",      attributes: { "data-container": "lds-incoming-1618-2026" } }
+        ]
+      }) }}
+
+      {# ── SECTION 2: Browse blob storage ── #}
+      <h2 class="govuk-heading-m">2. Select source file from blob storage</h2>
+
+      {# Shown only after a window is selected #}
+      <div id="file-browser" class="govuk-!-margin-bottom-6" style="display:none;">
+
+        <div id="breadcrumb-trail" class="govuk-body-s govuk-!-margin-bottom-2" style="color: #505A5F;">
+          <span id="breadcrumb-text">—</span>
+        </div>
+
+        <div class="file-browser">
+
+          <div class="file-browser__toolbar">
+            <button type="button" id="btn-up" class="govuk-button govuk-button--secondary govuk-!-margin-bottom-0" style="font-size:14px; padding: 4px 10px;" disabled>
+              ↑ Up
+            </button>
+            <span class="govuk-body-s" style="color:#505A5F;">Current location: <strong id="current-path-label">—</strong></span>
+          </div>
+
+          <table class="govuk-table govuk-!-margin-bottom-0">
+            <thead class="govuk-table__head">
+              <tr class="govuk-table__row">
+                <th class="govuk-table__header" style="width:40px;"></th>
+                <th class="govuk-table__header">Name</th>
+                <th class="govuk-table__header">Type</th>
+                <th class="govuk-table__header">Size</th>
+                <th class="govuk-table__header">Last modified</th>
+              </tr>
+            </thead>
+            <tbody class="govuk-table__body" id="file-listing"></tbody>
+          </table>
+
+        </div>
+
+        <div id="selected-file-summary" style="display:none;" class="govuk-inset-text govuk-!-margin-top-4">
+          <p class="govuk-body govuk-!-margin-bottom-0">
+            <strong>Selected file:</strong> <span id="selected-file-name">—</span>
+          </p>
+          <p class="govuk-body govuk-!-margin-bottom-0">
+            <strong>Size:</strong> <span id="selected-file-size">—</span> &nbsp;|&nbsp;
+            <strong>Last modified:</strong> <span id="selected-file-date">—</span>
+          </p>
+        </div>
+
+        <input type="hidden" name="sourceFile" id="sourceFile-input">
+        <input type="hidden" name="sourceFilePath" id="sourceFilePath-input">
+
+      </div>
+
+      {# Placeholder shown before window is selected #}
+      <div id="file-browser-placeholder">
+        {{ govukInsetText({
+          text: "Select a checking window above to browse the available source files."
+        }) }}
+      </div>
+
+      {# ── ACTIONS ── #}
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: "Next",
+          href: "/admin-publication/validating",
+          attributes: { id: "btn-next" }
+        }) }}
+        {{ govukButton({
+          text: "Cancel",
+          classes: "govuk-button--secondary",
+          href: "/admin"
+        }) }}
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+{% block pageScripts %}
+<script>
+  const blobData = {
+    "KS4-JUNE-2026": {
+      container: "lds-incoming-ks4june2026",
+      contents: {
+        "root": [
+          { type: "folder", name: "raw/" },
+          { type: "folder", name: "processed/" },
+          { type: "folder", name: "archive/" }
+        ],
+        "raw/": [
+          { type: "file", name: "ks4-june-2026-full-data.csv",    size: "24.5 MB", modified: "2 Jun 2026" },
+          { type: "file", name: "ks4-june-2026-full-data-v2.csv", size: "24.6 MB", modified: "5 Jun 2026" }
+        ],
+        "processed/": [
+          { type: "file", name: "ks4-june-2026-corrected.csv", size: "24.3 MB", modified: "4 Jun 2026" }
+        ],
+        "archive/": [
+          { type: "file", name: "ks4-june-2025-final.csv", size: "22.1 MB", modified: "10 Jul 2025" }
+        ]
+      }
+    },
+    "KS4-AUTUMN-2026": {
+      container: "lds-incoming-ks4autumn2026",
+      contents: {
+        "root": [
+          { type: "folder", name: "raw/" },
+          { type: "folder", name: "archive/" }
+        ],
+        "raw/": [
+          { type: "file", name: "ks4-autumn-2026-full-data.csv", size: "21.2 MB", modified: "1 Jun 2026" }
+        ],
+        "archive/": [
+          { type: "file", name: "ks4-autumn-2025-final.csv", size: "20.8 MB", modified: "5 Dec 2025" }
+        ]
+      }
+    },
+    "KS2-2026": {
+      container: "lds-incoming-ks22026",
+      contents: {
+        "root": [
+          { type: "folder", name: "raw/" }
+        ],
+        "raw/": [
+          { type: "file", name: "ks2-2026-full-data.csv", size: "31.0 MB", modified: "3 Jun 2026" }
+        ]
+      }
+    },
+    "16-18-2026": {
+      container: "lds-incoming-1618-2026",
+      contents: {
+        "root": [
+          { type: "folder", name: "raw/" }
+        ],
+        "raw/": [
+          { type: "file", name: "16-18-2026-full-data.csv", size: "18.5 MB", modified: "1 Jun 2026" }
+        ]
+      }
+    }
+  };
+
+  let currentWindow = null;
+  let currentPath   = "root";
+  let pathHistory   = [];
+
+  document.querySelectorAll('input[name="checkingWindow"]').forEach(function(radio) {
+    radio.addEventListener("change", function() {
+      currentWindow = this.value;
+      currentPath   = "root";
+      pathHistory   = [];
+      document.getElementById("file-browser").style.display = "block";
+      document.getElementById("file-browser-placeholder").style.display = "none";
+      clearSelection();
+      renderListing();
+    });
+  });
+
+  function renderListing() {
+    var data      = blobData[currentWindow];
+    var items     = data.contents[currentPath] || [];
+    var container = data.container;
+    var isRoot    = currentPath === "root";
+    var pathLabel = isRoot ? container : container + "/" + currentPath;
+
+    document.getElementById("current-path-label").textContent = pathLabel;
+    document.getElementById("btn-up").disabled = isRoot;
+    document.getElementById("breadcrumb-text").textContent = isRoot
+      ? container
+      : container + " / " + pathHistory.concat([currentPath]).join(" / ");
+
+    var tbody = document.getElementById("file-listing");
+    tbody.innerHTML = "";
+
+    items.forEach(function(item) {
+      var tr = document.createElement("tr");
+      tr.className = "govuk-table__row";
+
+      if (item.type === "folder") {
+        tr.innerHTML =
+          '<td class="govuk-table__cell" style="text-align:center;">📁</td>' +
+          '<td class="govuk-table__cell"><a href="#" class="govuk-link folder-link" data-folder="' + item.name + '">' + item.name + '</a></td>' +
+          '<td class="govuk-table__cell">Folder</td>' +
+          '<td class="govuk-table__cell">—</td>' +
+          '<td class="govuk-table__cell">—</td>';
+      } else {
+        var filePath = container + "/" + (currentPath !== "root" ? currentPath : "") + item.name;
+        tr.innerHTML =
+          '<td class="govuk-table__cell" style="text-align:center;">' +
+            '<input class="govuk-radios__input" type="radio" name="fileSelect" value="' + item.name + '"' +
+            ' data-size="' + item.size + '" data-modified="' + item.modified + '" data-path="' + filePath + '">' +
+          '</td>' +
+          '<td class="govuk-table__cell">📄 ' + item.name + '</td>' +
+          '<td class="govuk-table__cell">CSV</td>' +
+          '<td class="govuk-table__cell">' + item.size + '</td>' +
+          '<td class="govuk-table__cell">' + item.modified + '</td>';
+      }
+
+      tbody.appendChild(tr);
+    });
+
+    tbody.querySelectorAll(".folder-link").forEach(function(link) {
+      link.addEventListener("click", function(e) {
+        e.preventDefault();
+        pathHistory.push(currentPath);
+        currentPath = this.dataset.folder;
+        clearSelection();
+        renderListing();
+      });
+    });
+
+    tbody.querySelectorAll('input[type="radio"]').forEach(function(radio) {
+      radio.addEventListener("change", function() {
+        document.getElementById("selected-file-name").textContent  = this.value;
+        document.getElementById("selected-file-size").textContent  = this.dataset.size;
+        document.getElementById("selected-file-date").textContent  = this.dataset.modified;
+        document.getElementById("sourceFile-input").value          = this.value;
+        document.getElementById("sourceFilePath-input").value      = this.dataset.path;
+        document.getElementById("selected-file-summary").style.display = "block";
+      });
+    });
+  }
+
+  document.getElementById("btn-up").addEventListener("click", function() {
+    if (pathHistory.length > 0) {
+      currentPath = pathHistory.pop();
+      clearSelection();
+      renderListing();
+    }
+  });
+
+  function clearSelection() {
+    document.getElementById("selected-file-summary").style.display = "none";
+    document.getElementById("sourceFile-input").value              = "";
+    document.getElementById("sourceFilePath-input").value          = "";
+  }
+</script>
+{% endblock %}
+
+{% endblock %}

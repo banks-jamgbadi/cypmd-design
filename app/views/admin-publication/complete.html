@@ -1,0 +1,97 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Publication complete – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    {# ── SUCCESS PANEL ── #}
+    {{ govukPanel({
+      titleText: "Publication successful",
+      html: "KS4 June 2026<br><strong>All 42 schools published</strong>"
+    }) }}
+
+    {# ── PUBLICATION SUMMARY ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-6">Publication summary</h2>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "File published" },
+          value: { text: "ks4-june-2026-full-data.csv" }
+        },
+        {
+          key: { text: "Schools published" },
+          value: { text: "42" }
+        },
+        {
+          key: { text: "Total pupils" },
+          value: { text: "123,456" }
+        },
+        {
+          key: { text: "Files uploaded" },
+          value: { text: "42 JSON files" }
+        },
+        {
+          key: { text: "Published by" },
+          value: { text: "Banks Jamgbadi" }
+        },
+        {
+          key: { text: "Published at" },
+          value: { text: "8 June 2026 at 14:49:32 UTC" }
+        },
+        {
+          key: { text: "Total time" },
+          value: { text: "4 minutes 32 seconds" }
+        },
+        {
+          key: { text: "Failed schools" },
+          value: { text: "0" }
+        },
+        {
+          key: { text: "Audit trail" },
+          value: { html: '<strong class="govuk-tag govuk-tag--green">Logged</strong>' }
+        }
+      ]
+    }) }}
+
+    {# ── NEXT STEPS ── #}
+    {{ govukInsetText({
+      html: 'School administrators can now see their pupil data and download CSVs from their checking window in CYPMD.'
+    }) }}
+
+    {# ── ACTIONS ── #}
+    <div class="govuk-button-group govuk-!-margin-top-4">
+      {{ govukButton({
+        text: "Back to publication home",
+        href: "/admin-publication"
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

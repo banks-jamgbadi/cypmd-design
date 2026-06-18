@@ -1,0 +1,85 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Pupil found in your data – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+{{ govukPhaseBanner({
+tag: { text: "Alpha" },
+html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+}) }}
+{{ govukBreadcrumbs({
+items: [
+{ text: "Home", href: "/home" },
+{ text: "Check your pupil data", href: "/check-data" }
+]
+}) }}
+<div style="text-align: right; margin-top: -28px;">
+    <a class="govuk-link" href="/sign-out">Sign out</a>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        <a class="govuk-back-link" href="/change-request/add-pupil/identity">Back</a>
+
+        <h1 class="govuk-heading-l govuk-!-margin-top-4">Add pupil</h1>
+
+        {{ govukWarningText({
+        html: "We found Harry Maguire in your school's data. This pupil is not included. Please <a class='govuk-link'
+            href='/change-request/type'>raise an include request</a> instead.",
+        iconFallbackText: "Warning"
+        }) }}
+
+        {{ govukSummaryList({
+        rows: [
+        {
+        key: { text: "Name" },
+        value: { text: "Harry Maguire" }
+        },
+        {
+        key: { text: "Date of birth" },
+        value: { text: "1 January 2009" }
+        },
+        {
+        key: { text: "Data" },
+        value: { html: '<strong class="govuk-tag govuk-tag--grey">Pupil non-included</strong>' }
+        }
+        ]
+        }) }}
+
+        <form method="post" action="/change-request/add-pupil/found-excluded">
+            <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+            {{ govukRadios({
+            name: "cancelRequest",
+            fieldset: {
+            legend: {
+            text: "Would you like to cancel this add pupil request?",
+            classes: "govuk-fieldset__legend--m"
+            }
+            },
+            items: [
+            {
+            value: "yes",
+            text: "Yes"
+            },
+            {
+            value: "no",
+            text: "No"
+            }
+            ]
+            }) }}
+
+            {{ govukButton({ text: "Continue" }) }}
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

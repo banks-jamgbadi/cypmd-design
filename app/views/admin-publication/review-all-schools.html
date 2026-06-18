@@ -1,0 +1,135 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  All schools – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <a class="govuk-back-link" href="/admin-publication/review">Back to review</a>
+
+    <h1 class="govuk-heading-xl govuk-!-margin-top-4">All schools</h1>
+
+    {# ── SUMMARY ── #}
+    {{ govukSummaryList({
+      classes: "govuk-!-margin-bottom-6",
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "Total schools" },
+          value: { text: "42" }
+        },
+        {
+          key: { text: "Total pupils" },
+          value: { text: "123,456" }
+        },
+        {
+          key: { text: "Status" },
+          value: { html: '<strong class="govuk-tag govuk-tag--green">All ready</strong>' }
+        }
+      ]
+    }) }}
+
+    {# ── SEARCH ── #}
+    <div class="govuk-form-group govuk-!-margin-bottom-4">
+      <label class="govuk-label" for="search-schools">
+        Search by school name or LAESTAB
+      </label>
+      <div style="display: flex; gap: 10px; align-items: flex-end;">
+        <input class="govuk-input" id="search-schools" name="searchSchools" type="text" style="max-width: 20em;">
+        {{ govukButton({
+          text: "Search",
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+        }) }}
+      </div>
+    </div>
+
+    {# ── FULL SCHOOLS TABLE ── #}
+    {{ govukTable({
+      head: [
+        { text: "School name" },
+        { text: "LAESTAB" },
+        { text: "Pupil records", format: "numeric" },
+        { text: "Status" }
+      ],
+      rows: [
+        [{ text: "Ashworth Academy" },          { text: "01/1001" }, { text: "312",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Bramley High School" },        { text: "02/2034" }, { text: "289",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Cedar Park Secondary" },       { text: "03/3012" }, { text: "347",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Dawnfields College" },         { text: "04/4056" }, { text: "198",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Eastbrook Academy" },          { text: "05/5023" }, { text: "421",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Ferndale School" },            { text: "06/6078" }, { text: "265",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Greenway Comprehensive" },     { text: "07/7045" }, { text: "378",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Hillcrest Secondary" },        { text: "08/8091" }, { text: "302",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Ironbridge High" },            { text: "09/9034" }, { text: "415",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Juniper Academy" },            { text: "10/1023" }, { text: "334",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Kingsford Secondary" },        { text: "11/1134" }, { text: "276",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Langley Park School" },        { text: "12/1245" }, { text: "391",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Moorside Academy" },           { text: "13/1356" }, { text: "318",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Northgate High" },             { text: "14/1467" }, { text: "443",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Oakfield College" },           { text: "15/1578" }, { text: "287",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Parkview Comprehensive" },     { text: "16/1689" }, { text: "362",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Queensbury Academy" },         { text: "17/1790" }, { text: "299",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Riverdale School" },           { text: "18/1801" }, { text: "411",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Stoneleigh Secondary" },       { text: "19/1912" }, { text: "256",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Thornbury High School" },      { text: "20/2023" }, { text: "388",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Underhill Academy" },          { text: "21/2134" }, { text: "321",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Valley Park School" },         { text: "22/2245" }, { text: "274",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Westfield Comprehensive" },    { text: "23/2356" }, { text: "436",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Xton Academy" },               { text: "24/2467" }, { text: "293",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Yarrow High School" },         { text: "25/2578" }, { text: "367",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Zetland Secondary" },          { text: "26/2689" }, { text: "308",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Alderton School" },            { text: "27/2790" }, { text: "419",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Birchwood Academy" },          { text: "28/2801" }, { text: "281",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Castleton High" },             { text: "29/2912" }, { text: "354",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Dunmore Comprehensive" },      { text: "30/3023" }, { text: "296",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Elmwood Secondary" },          { text: "31/3134" }, { text: "383",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Fairfield Academy" },          { text: "32/3245" }, { text: "317",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Grasmere High School" },       { text: "33/3356" }, { text: "402",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Hartfield College" },          { text: "34/3467" }, { text: "268",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Inglewood Secondary" },        { text: "35/3578" }, { text: "341",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Jasper Academy" },             { text: "36/3689" }, { text: "287",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Kenilworth School" },          { text: "37/3790" }, { text: "376",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Larchwood Comprehensive" },    { text: "38/3801" }, { text: "312",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Millbrook High" },             { text: "39/3912" }, { text: "429",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Norwood Academy" },            { text: "40/4023" }, { text: "274",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Orchard Secondary" },          { text: "41/4134" }, { text: "358",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }],
+        [{ text: "Pinewood School" },            { text: "42/4245" }, { text: "303",  format: "numeric" }, { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }]
+      ]
+    }) }}
+
+    {# ── TOTALS ── #}
+    {{ govukInsetText({
+      html: '<strong>Total: 42 schools &nbsp;|&nbsp; 123,456 pupils &nbsp;|&nbsp; All ready for publication</strong>'
+    }) }}
+
+    {# ── BACK LINK ── #}
+    <div class="govuk-!-margin-top-4">
+      <a class="govuk-link" href="/admin-publication/review">← Back to review</a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

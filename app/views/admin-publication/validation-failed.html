@@ -1,0 +1,130 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Validation failed – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    {# ── ERROR SUMMARY ── #}
+    {{ govukErrorSummary({
+      titleText: "Validation failed",
+      descriptionText: "The file could not be validated. Fix the errors below before selecting a new file.",
+      errorList: [
+        {
+          text: "Required column missing: P_INCL",
+          href: "#error-1"
+        },
+        {
+          text: "File corruption detected in rows 1234–1250",
+          href: "#error-2"
+        },
+        {
+          text: "Invalid LAESTAB values found",
+          href: "#error-3"
+        }
+      ]
+    }) }}
+
+    {# ── FILE SUMMARY (read-only) ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-2">File details</h2>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "File name" },
+          value: { text: "ks4-june-2026-full-data.csv" }
+        },
+        {
+          key: { text: "File size" },
+          value: { text: "24.5 MB" }
+        },
+        {
+          key: { text: "Status" },
+          value: {
+            html: '<strong class="govuk-tag govuk-tag--red">Validation failed</strong>'
+          }
+        }
+      ]
+    }) }}
+
+    {# ── CRITICAL ERRORS ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-2">Critical errors <span class="govuk-body-s" style="color:#505A5F;">(must be fixed before proceeding)</span></h2>
+
+    {{ govukTable({
+      head: [
+        { text: "Error" },
+        { text: "Detail" },
+        { text: "Action required" }
+      ],
+      rows: [
+        [
+          {
+            html: '<p id="error-1" class="govuk-body govuk-!-margin-bottom-0"><strong>Required column missing: P_INCL</strong></p>'
+          },
+          { text: "Cannot filter pupils without inclusion status" },
+          { text: "Add the P_INCL column to the source file" }
+        ],
+        [
+          {
+            html: '<p id="error-2" class="govuk-body govuk-!-margin-bottom-0"><strong>File corruption in rows 1234–1250</strong></p>'
+          },
+          { text: "17 rows unreadable — file may be incomplete" },
+          { text: "Verify file integrity and re-export from source" }
+        ],
+        [
+          {
+            html: '<p id="error-3" class="govuk-body govuk-!-margin-bottom-0"><strong>Invalid LAESTAB values found</strong></p>'
+          },
+          { text: "LAESTAB codes do not match expected format" },
+          { text: "Correct LAESTAB values in the source file" }
+        ]
+      ]
+    }) }}
+
+    {# ── ACTION REQUIRED ── #}
+    {{ govukInsetText({
+      html: '<p class="govuk-body govuk-!-margin-bottom-1"><strong>What to do next</strong></p>
+             <p class="govuk-body govuk-!-margin-bottom-1">Contact the LDS AAD team to fix the errors in the source file.</p>
+             <p class="govuk-body govuk-!-margin-bottom-0"></p>'
+    }) }}
+
+    {# ── ACTIONS ── #}
+    <div class="govuk-button-group govuk-!-margin-top-4">
+      {{ govukButton({
+        text: "Select a different file",
+        href: "/admin-publication"
+      }) }}
+      {{ govukButton({
+        text: "Cancel",
+        classes: "govuk-button--secondary",
+        href: "/admin-publication"
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

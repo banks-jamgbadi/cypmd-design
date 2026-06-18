@@ -1,0 +1,49 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Download pupil include – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service. Your <a class="govuk-link" href="/feedback">feedback</a> will help improve it'
+  }) }}
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <a class="govuk-link govuk-link--no-visited-state" href="javascript:history.back()">&lt; back</a>
+    <a class="govuk-link" href="/sign-out">Sign out</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <h1 class="govuk-heading-l">Download pupil include</h1>
+
+      <form method="post" action="/download-pupil-include">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {{ govukCheckboxes({
+          name: "downloadOptions",
+          items: [
+            {
+              value: "pupil-include-data",
+              text: "Pupil Include data"
+            },
+            {
+              value: "pupil-include-guidance",
+              text: "Pupil Include guidance"
+            }
+          ]
+        }) }}
+
+        {{ govukButton({ text: "Download" }) }}
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

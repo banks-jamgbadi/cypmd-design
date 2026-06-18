@@ -1,0 +1,142 @@
+{
+  "database_models": [
+    {
+      "name": "AuditEntry",
+      "description": "Tracks audit information for entity changes including what was changed, when, and by whom",
+      "key_properties": [
+        "Id",
+        "EntityType",
+        "EntityId",
+        "Action",
+        "OldValues",
+        "NewValues",
+        "ChangedColumns",
+        "Timestamp",
+        "UserId"
+      ]
+    },
+    {
+      "name": "ChangeRequest",
+      "description": "Represents a change request submitted by a user for a specific checking window and pupil",
+      "key_properties": [
+        "Id",
+        "WindowId",
+        "OrganisationUrn",
+        "PupilUpn",
+        "PupilFirstname",
+        "PupilSurname",
+        "Submitted",
+        "SubmittedById",
+        "SubmittedByName",
+        "Status",
+        "ReferenceNumber",
+        "RequestType",
+        "CrmId"
+      ]
+    },
+    {
+      "name": "CheckingWindow",
+      "description": "Represents a checking window period during which pupil data can be checked and changed",
+      "key_properties": []
+    },
+    {
+      "name": "ContentBlock",
+      "description": "Reusable content blocks that can be embedded in wiki pages or other parts of the application",
+      "key_properties": [
+        "Id",
+        "Key",
+        "BlockType",
+        "Value",
+        "CreatedAt",
+        "CreatedBy",
+        "UpdatedAt",
+        "UpdatedBy"
+      ]
+    },
+    {
+      "name": "ContentBlockVersion",
+      "description": "Version history for content blocks, tracking all changes over time",
+      "key_properties": []
+    },
+    {
+      "name": "Country",
+      "description": "Represents country information, likely used for pupil data or school locations",
+      "key_properties": []
+    },
+    {
+      "name": "Pupil",
+      "description": "Pupil data for a specific checking window (currently KS4 June). Contains pupil demographics and performance information",
+      "key_properties": [
+        "Id",
+        "CheckingWindowId",
+        "Laestab",
+        "Surname",
+        "Firstname",
+        "Sex",
+        "DateOfBirth",
+        "Age",
+        "FirstLanguage",
+        "Pincl",
+        "NewMobile",
+        "ActualYearGroup",
+        "Ethnicity",
+        "SenF",
+        "EntryDate",
+        "Urn",
+        "Cypmd_Id",
+        "MatchRef",
+        "Upn"
+      ]
+    },
+    {
+      "name": "Setting",
+      "description": "Application configuration settings stored in the database",
+      "key_properties": []
+    },
+    {
+      "name": "WikiPage",
+      "description": "Wiki pages for help content and documentation, supporting hierarchical structure, versioning, and soft deletes",
+      "key_properties": [
+        "Id",
+        "Title",
+        "Slug",
+        "Content",
+        "BodyPlainText",
+        "SearchVector",
+        "ParentId",
+        "SortOrder",
+        "IsDeleted",
+        "DeletedAt",
+        "DeletedBy",
+        "CreatedAt",
+        "CreatedBy",
+        "UpdatedAt",
+        "UpdatedBy"
+      ]
+    },
+    {
+      "name": "WikiPageVersion",
+      "description": "Version history for wiki pages, tracking all changes and allowing page reverts",
+      "key_properties": []
+    }
+  ],
+  "related_enums": [
+    {
+      "name": "CheckingWindowType",
+      "location": "src/DfE.CheckPerformanceData.Domain/Enums"
+    },
+    {
+      "name": "CountryKind",
+      "location": "src/DfE.CheckPerformanceData.Domain/Enums"
+    },
+    {
+      "name": "KeyStages",
+      "location": "src/DfE.CheckPerformanceData.Domain/Enums"
+    },
+    {
+      "name": "RequestStatus",
+      "location": "src/DfE.CheckPerformanceData.Domain/Enums"
+    }
+  ],
+  "total_models": 10
+}

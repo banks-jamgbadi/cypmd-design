@@ -1,0 +1,125 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Summary of amendment request – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Home", href: "/home" },
+      { text: "Check your pupil data", href: "/check-data" }
+    ]
+  }) }}
+  <div style="text-align: right; margin-top: -28px;">
+    <a class="govuk-link" href="/sign-out">Sign out</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <a class="govuk-back-link" href="/change-request/add-pupil/evidence">Back</a>
+
+      <span class="govuk-caption-l govuk-!-margin-top-4">Check details</span>
+      <h1 class="govuk-heading-l">Summary of amendment request</h1>
+
+      <h2 class="govuk-heading-m">Check details for the addition of Harry Maguire</h2>
+
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: { text: "What pupil data would you like to change?" },
+            value: { text: "Add a pupil" }
+          },
+          {
+            key: { text: "Forename" },
+            value: { text: "Harry" },
+            actions: { items: [{ href: "/change-request/add-pupil/identity", text: "Change", visuallyHiddenText: "forename" }] }
+          },
+          {
+            key: { text: "Surname" },
+            value: { text: "Maguire" },
+            actions: { items: [{ href: "/change-request/add-pupil/identity", text: "Change", visuallyHiddenText: "surname" }] }
+          },
+          {
+            key: { text: "Date of birth" },
+            value: { text: "1 January 2009" },
+            actions: { items: [{ href: "/change-request/add-pupil/identity", text: "Change", visuallyHiddenText: "date of birth" }] }
+          },
+          {
+            key: { text: "Sex" },
+            value: { text: "Male" },
+            actions: { items: [{ href: "/change-request/add-pupil/identity", text: "Change", visuallyHiddenText: "sex" }] }
+          },
+          {
+            key: { text: "UPN" },
+            value: { text: "Not provided" },
+            actions: { items: [{ href: "/change-request/add-pupil/identity", text: "Change", visuallyHiddenText: "UPN" }] }
+          },
+          {
+            key: { text: "Admission date" },
+            value: { text: "1 September 2023" },
+            actions: { items: [{ href: "/change-request/add-pupil/cohort", text: "Change", visuallyHiddenText: "admission date" }] }
+          },
+          {
+            key: { text: "SEN status" },
+            value: { text: "N" },
+            actions: { items: [{ href: "/change-request/add-pupil/cohort", text: "Change", visuallyHiddenText: "SEN status" }] }
+          },
+          {
+            key: { text: "Year group" },
+            value: { text: "Year 10" },
+            actions: { items: [{ href: "/change-request/add-pupil/cohort", text: "Change", visuallyHiddenText: "year group" }] }
+          },
+          {
+            key: { text: "Reason for adding" },
+            value: { text: "The pupil transferred to our school in September 2023 and has been attending regularly but was not included in the original data submission." },
+            actions: { items: [{ href: "/change-request/add-pupil/evidence", text: "Change", visuallyHiddenText: "reason for adding" }] }
+          }
+        ]
+      }) }}
+
+      <h2 class="govuk-heading-m govuk-!-margin-top-4">Summary of uploaded documents</h2>
+
+      {{ govukTable({
+        head: [
+          { text: "File name" },
+          { text: "File size" },
+          { text: "Type" },
+          { text: "Action" }
+        ],
+        rows: [
+          [
+            { html: '<a class="govuk-link" href="#">Evidence.pdf</a>' },
+            { text: "14.46kb" },
+            { text: "PDF" },
+            { html: '<a class="govuk-link" href="/change-request/add-pupil/evidence">Change</a>' }
+          ]
+        ]
+      }) }}
+
+      <form method="post" action="/change-request/add-pupil/submitted">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        <div class="govuk-button-group govuk-!-margin-top-4">
+          {{ govukButton({ text: "Submit request" }) }}
+          {{ govukButton({
+            text: "Save and continue later",
+            classes: "govuk-button--secondary",
+            href: "/check-data"
+          }) }}
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

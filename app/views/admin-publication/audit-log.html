@@ -1,0 +1,123 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Audit log – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("audit-log") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Publication audit log</h1>
+    <p class="govuk-body">A record of all data publications. Logs are retained indefinitely for compliance.</p>
+
+    {# ── FILTERS ── #}
+    <div class="govuk-grid-row govuk-!-margin-bottom-4">
+      <div class="govuk-grid-column-one-half">
+        {{ govukSelect({
+          id: "filter-window",
+          name: "filterWindow",
+          label: { text: "Filter by checking window" },
+          items: [
+            { value: "",           text: "All windows",     selected: true },
+            { value: "ks4-june",   text: "KS4 June 2026" },
+            { value: "ks4-autumn", text: "KS4 Autumn 2026" },
+            { value: "ks2",        text: "KS2 2026" },
+            { value: "16-18",      text: "16-18 2026" }
+          ]
+        }) }}
+      </div>
+      <div class="govuk-grid-column-one-half">
+        {{ govukSelect({
+          id: "filter-status",
+          name: "filterStatus",
+          label: { text: "Filter by status" },
+          items: [
+            { value: "",        text: "All statuses", selected: true },
+            { value: "success", text: "Success" },
+            { value: "failed",  text: "Failed" }
+          ]
+        }) }}
+      </div>
+    </div>
+
+    {# ── AUDIT LOG TABLE ── #}
+    {{ govukTable({
+      head: [
+        { text: "Published by" },
+        { text: "Checking Window" },
+        { text: "Time" },
+        { text: "Status" }
+      ],
+      rows: [
+        [
+          { text: "Banks Jamgbadi" },
+          { html: "KS4 June 2026<br><span class='govuk-body-s' style='color:#505A5F;'>ks4-june-2026-full-data.csv</span>" },
+          { html: "8 Jun 2026<br><span class='govuk-body-s' style='color:#505A5F;'>14:49:32 UTC</span>" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Success</strong>' }
+        ],
+        [
+          { text: "Banks Jamgbadi" },
+          { html: "KS4 Autumn 2026<br><span class='govuk-body-s' style='color:#505A5F;'>ks4-autumn-2026-full-data.csv</span>" },
+          { html: "28 May 2026<br><span class='govuk-body-s' style='color:#505A5F;'>10:15:20 UTC</span>" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Success</strong>' }
+        ],
+        [
+          { text: "Banks Jamgbadi" },
+          { html: "KS2 2026<br><span class='govuk-body-s' style='color:#505A5F;'>ks2-2026-full-data.csv</span>" },
+          { html: "20 May 2026<br><span class='govuk-body-s' style='color:#505A5F;'>09:00:12 UTC</span>" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Success</strong>' }
+        ],
+        [
+          { text: "Banks Jamgbadi" },
+          { html: "16-18 2026<br><span class='govuk-body-s' style='color:#505A5F;'>16-18-2026-full-data.csv</span>" },
+          { html: "14 May 2026<br><span class='govuk-body-s' style='color:#505A5F;'>11:30:05 UTC</span>" },
+          { html: '<strong class="govuk-tag govuk-tag--red">Failed</strong>' }
+        ],
+        [
+          { text: "Banks Jamgbadi" },
+          { html: "KS4 June 2025<br><span class='govuk-body-s' style='color:#505A5F;'>ks4-june-2025-final.csv</span>" },
+          { html: "2 Apr 2026<br><span class='govuk-body-s' style='color:#505A5F;'>08:45:00 UTC</span>" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Success</strong>' }
+        ]
+      ]
+    }) }}
+
+    {# ── PAGINATION ── #}
+    {{ govukPagination({
+      next: { href: "?page=2" },
+      items: [
+        { number: 1, href: "?page=1", current: true },
+        { number: 2, href: "?page=2" }
+      ]
+    }) }}
+
+    {# ── EXPORT ── #}
+    <div class="govuk-button-group govuk-!-margin-top-2">
+      {{ govukButton({
+        text: "Export log as CSV",
+        classes: "govuk-button--secondary",
+        href: "/admin-publication/audit-log/export"
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

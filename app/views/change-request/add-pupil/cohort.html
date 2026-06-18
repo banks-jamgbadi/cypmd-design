@@ -1,0 +1,105 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Add a pupil – cohort identifiers – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Home", href: "/home" },
+      { text: "Check your pupil data", href: "/check-data" }
+    ]
+  }) }}
+  <div style="text-align: right; margin-top: -28px;">
+    <a class="govuk-link" href="/sign-out">Sign out</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <a class="govuk-back-link" href="/change-request/add-pupil/identity">Back</a>
+
+      <h1 class="govuk-heading-l">Add Pupil</h1>
+
+      <details class="govuk-details">
+        <summary class="govuk-details__summary">
+          <span class="govuk-details__summary-text">
+            What do the SEN status codes mean?
+          </span>
+        </summary>
+        <div class="govuk-details__text">
+          <ul class="govuk-list govuk-list--bullet">
+             <li><strong>N</strong> - No Special Educational Need</li>
+            <li><strong>E</strong> - Education, Health and Care Plan</li>
+            <li><strong>K</strong> - SEN Support</li>
+          </ul>
+        </div>
+      </details>
+
+      <form method="post" action="/change-request/add-pupil/cohort">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {{ govukDateInput({
+          id: "admission-date",
+          namePrefix: "admissionDate",
+          fieldset: {
+            legend: {
+              text: "Admission date",
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          hint: { text: "For example, 1 9 2023" }
+        }) }}
+
+        {{ govukRadios({
+          name: "sen",
+          fieldset: {
+            legend: {
+              text: "SEN status",
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          classes: "govuk-radios--inline",
+          items: [
+            { value: "N", text: "N" },
+            { value: "K", text: "K" },
+            { value: "E", text: "E" }
+          ]
+        }) }}
+
+        {{ govukSelect({
+          id: "year-group",
+          name: "yearGroup",
+          label: {
+            text: "Year group",
+            classes: "govuk-label--s"
+          },
+          items: [
+            { value: "",   text: "Select year group" },
+            { value: "7",  text: "Year 7" },
+            { value: "8",  text: "Year 8" },
+            { value: "9",  text: "Year 9" },
+            { value: "10", text: "Year 10" },
+            { value: "11", text: "Year 11" }
+          ]
+        }) }}
+
+        <div class="govuk-button-group govuk-!-margin-top-4">
+          {{ govukButton({ text: "Continue" }) }}
+         
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}

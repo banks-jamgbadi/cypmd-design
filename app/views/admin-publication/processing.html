@@ -1,0 +1,161 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Processing data – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Processing data</h1>
+
+    {# ── FILE SUMMARY (read-only) ── #}
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "File name" },
+          value: { text: "ks4-june-2026-full-data.csv" }
+        },
+        {
+          key: { text: "File size" },
+          value: { text: "24.5 MB" }
+        },
+        {
+          key: { text: "Validation" },
+          value: {
+            html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>'
+          }
+        }
+      ]
+    }) }}
+
+    {# ── PROGRESS BAR ── #}
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Processing progress</h2>
+
+    <div class="progress-bar-outer" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Processing progress">
+      <div class="progress-bar-inner" id="progress-bar"></div>
+    </div>
+    <p class="govuk-body-s govuk-!-margin-top-1">
+      <span id="progress-percent">0%</span> complete
+    </p>
+
+    {# ── PROCESSING STEPS ── #}
+    <h2 class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-2">Steps</h2>
+
+    <ul class="govuk-list" id="steps-list">
+      <li class="check-item" data-delay="800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">File validated</span>
+      </li>
+      <li class="check-item" data-delay="2200">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Parse CSV</span>
+      </li>
+      <li class="check-item" data-delay="3800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Filter by P_INCL = Included</span>
+      </li>
+      <li class="check-item" data-delay="5400">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Group by LAESTAB and split</span>
+      </li>
+      <li class="check-item" data-delay="7000">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Prepare school files</span>
+      </li>
+      <li class="check-item" data-delay="8600">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Store processed data</span>
+      </li>
+    </ul>
+
+    {# ── TIMING ── #}
+    <p class="govuk-body-s govuk-!-margin-top-4" style="color: #505A5F;">
+      Time elapsed: <strong id="time-elapsed">0 secs</strong>
+      &nbsp;|&nbsp;
+      ETA: <strong id="eta-text">Calculating...</strong>
+    </p>
+
+    {# ── STATUS MESSAGE ── #}
+    <p class="govuk-body" id="status-message">
+      <strong>Processing in progress</strong> — do not navigate away from this page.
+    </p>
+
+    {# ── ACTION ── #}
+    <div class="govuk-button-group govuk-!-margin-top-4">
+      {{ govukButton({
+        text: "Cancel processing",
+        classes: "govuk-button--warning",
+        href: "/admin-publication",
+        attributes: { id: "btn-cancel" }
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  var totalSteps    = document.querySelectorAll(".check-item").length;
+  var completed     = 0;
+  var startTime     = Date.now();
+  var timerInterval = setInterval(function() {
+    var elapsed = Math.floor((Date.now() - startTime) / 1000);
+    var mins    = Math.floor(elapsed / 60);
+    var secs    = elapsed % 60;
+    document.getElementById("time-elapsed").textContent =
+      mins > 0 ? mins + " min " + secs + " secs" : secs + " secs";
+
+    var remaining = totalSteps - completed;
+    document.getElementById("eta-text").textContent = remaining > 0
+      ? "~" + (remaining * 1.6).toFixed(0) + " seconds remaining"
+      : "Almost done...";
+  }, 1000);
+
+  document.querySelectorAll(".check-item").forEach(function(item) {
+    setTimeout(function() {
+      item.querySelector(".check-icon").innerHTML = "✓";
+      item.classList.add("check-item--done");
+      completed++;
+
+      var pct = Math.round((completed / totalSteps) * 100);
+      document.getElementById("progress-bar").style.width = pct + "%";
+      document.getElementById("progress-percent").textContent = pct + "%";
+      document.querySelector(".progress-bar-outer").setAttribute("aria-valuenow", pct);
+
+      if (completed === totalSteps) {
+        clearInterval(timerInterval);
+        document.getElementById("status-message").innerHTML =
+          "<strong>Processing complete</strong> — redirecting...";
+        document.getElementById("btn-cancel").style.display = "none";
+        setTimeout(function() {
+          window.location.href = "/admin-publication/review";
+        }, 1000);
+      }
+    }, parseInt(item.dataset.delay, 10));
+  });
+</script>
+{% endblock %}

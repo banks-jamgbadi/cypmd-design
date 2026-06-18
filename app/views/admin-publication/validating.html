@@ -1,0 +1,159 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Validating data quality – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Validating data quality</h1>
+
+    {# ── FILE SUMMARY (read-only) ── #}
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "File name" },
+          value: { text: "ks4-june-2026-full-data.csv" }
+        },
+        {
+          key: { text: "File size" },
+          value: { text: "24.5 MB" }
+        }
+      ]
+    }) }}
+
+    {# ── PROGRESS BAR ── #}
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Validation progress</h2>
+
+    <div class="progress-bar-outer" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Validation progress">
+      <div class="progress-bar-inner" id="progress-bar"></div>
+    </div>
+    <p class="govuk-body-s govuk-!-margin-top-1">
+      <span id="progress-percent">0%</span> complete
+    </p>
+
+    {# ── CHECKS LIST ── #}
+    <h2 class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-2">Checks</h2>
+
+    <ul class="govuk-list" id="checks-list">
+      <li class="check-item" data-delay="800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">File format (CSV)</span>
+      </li>
+      <li class="check-item" data-delay="1800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Required columns present</span>
+      </li>
+      <li class="check-item" data-delay="2800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">File integrity</span>
+      </li>
+      <li class="check-item" data-delay="3800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Data types validation</span>
+      </li>
+      <li class="check-item" data-delay="4800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">LAESTAB format check</span>
+      </li>
+      <li class="check-item" data-delay="5800">
+       <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">P_INCL values</span>
+      </li>
+      <li class="check-item" data-delay="6800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Key field completeness</span>
+      </li>
+    </ul>
+
+    {# ── TIMING ── #}
+    <p class="govuk-body-s govuk-!-margin-top-4" style="color: #505A5F;">
+      Time elapsed: <strong id="time-elapsed">0 secs</strong>
+      &nbsp;|&nbsp;
+      ETA: <strong id="eta-text">Calculating...</strong>
+    </p>
+
+    {# ── STATUS MESSAGE ── #}
+    <p class="govuk-body" id="status-message">
+      <strong>Validation in progress</strong> — do not navigate away from this page.
+    </p>
+
+    {# ── ACTION ── #}
+    <div class="govuk-button-group govuk-!-margin-top-4">
+      {{ govukButton({
+        text: "Cancel validation",
+        classes: "govuk-button--warning",
+        href: "/admin-publication",
+        attributes: { id: "btn-cancel" }
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  var totalChecks   = document.querySelectorAll(".check-item").length;
+  var completed     = 0;
+  var startTime     = Date.now();
+  var timerInterval = setInterval(function() {
+    var elapsed = Math.floor((Date.now() - startTime) / 1000);
+    var mins    = Math.floor(elapsed / 60);
+    var secs    = elapsed % 60;
+    document.getElementById("time-elapsed").textContent =
+      mins > 0 ? mins + " min " + secs + " secs" : secs + " secs";
+
+    var remaining = totalChecks - completed;
+    document.getElementById("eta-text").textContent = remaining > 0
+      ? "~" + remaining + " seconds remaining"
+      : "Almost done...";
+  }, 1000);
+
+  document.querySelectorAll(".check-item").forEach(function(item) {
+    setTimeout(function() {
+      item.querySelector(".check-icon").innerHTML = "✓";
+      item.classList.add("check-item--done");
+      completed++;
+
+      var pct = Math.round((completed / totalChecks) * 100);
+      document.getElementById("progress-bar").style.width = pct + "%";
+      document.getElementById("progress-percent").textContent = pct + "%";
+      document.querySelector(".progress-bar-outer").setAttribute("aria-valuenow", pct);
+
+      if (completed === totalChecks) {
+        clearInterval(timerInterval);
+        document.getElementById("status-message").innerHTML =
+          "<strong>Validation complete</strong> — redirecting...";
+        document.getElementById("btn-cancel").style.display = "none";
+        setTimeout(function() {
+          window.location.href = "/admin-publication/validation-passed";
+        }, 1000);
+      }
+    }, parseInt(item.dataset.delay, 10));
+  });
+</script>
+{% endblock %}

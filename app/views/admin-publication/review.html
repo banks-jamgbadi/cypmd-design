@@ -1,0 +1,245 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Review publication – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    {# ── SUCCESS PANEL ── #}
+    {{ govukPanel({
+      titleText: "Processing complete",
+      html: "KS4 June 2026<br><strong>ks4-june-2026-full-data.csv</strong>"
+    }) }}
+
+    {# ── FILE SUMMARY ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-6">Publication summary</h2>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "File name" },
+          value: { text: "ks4-june-2026-full-data.csv" }
+        },
+        {
+          key: { text: "Validation" },
+          value: { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' }
+        },
+        {
+          key: { text: "Processing" },
+          value: { html: '<strong class="govuk-tag govuk-tag--green">Complete</strong>' }
+        },
+        {
+          key: { text: "Processing time" },
+          value: { text: "6 mins 23 secs" }
+        },
+        {
+          key: { text: "Status" },
+          value: { html: '<strong class="govuk-tag govuk-tag--blue">Ready for approval</strong>' }
+        }
+      ]
+    }) }}
+
+    {# ── VALIDATION RESULTS RECAP ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-2">Validation results</h2>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Quality checks" },
+          value: { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' }
+        },
+        {
+          key: { text: "Total source rows" },
+          value: { text: "125,480" }
+        },
+        {
+          key: { text: "Valid rows processed" },
+          value: { text: "125,479" }
+        }
+      ]
+    }) }}
+
+    {# ── DATA QUALITY SUMMARY ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-2">Data quality</h2>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Source records" },
+          value: { text: "125,480" }
+        },
+        {
+          key: { text: 'P_INCL = Included' },
+          value: { text: "123,456 (98.4%)" }
+        },
+        {
+          key: { text: 'P_INCL = Not included' },
+          value: { text: "1,024 (0.8%)" }
+        }
+        
+      ]
+    }) }}
+
+    {# ── SCHOOL BREAKDOWN TABLE ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-2">School breakdown</h2>
+    <p class="govuk-body">Showing 10 of 42 schools. <a class="govuk-link" href="/admin-publication/review-all-schools">View all schools</a></p>
+
+    {{ govukTable({
+      head: [
+        { text: "School name" },
+        { text: "LAESTAB" },
+        { text: "Pupil records", format: "numeric" },
+        { text: "Status" }
+      ],
+      rows: [
+        [
+          { text: "Ashworth Academy" },
+          { text: "01/1001" },
+          { text: "312", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Bramley High School" },
+          { text: "02/2034" },
+          { text: "289", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Cedar Park Secondary" },
+          { text: "03/3012" },
+          { text: "347", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Dawnfields College" },
+          { text: "04/4056" },
+          { text: "198", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Eastbrook Academy" },
+          { text: "05/5023" },
+          { text: "421", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Ferndale School" },
+          { text: "06/6078" },
+          { text: "265", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Greenway Comprehensive" },
+          { text: "07/7045" },
+          { text: "378", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Hillcrest Secondary" },
+          { text: "08/8091" },
+          { text: "302", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Ironbridge High" },
+          { text: "09/9034" },
+          { text: "415", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ],
+        [
+          { text: "Juniper Academy" },
+          { text: "10/1023" },
+          { text: "334", format: "numeric" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Ready</strong>' }
+        ]
+      ]
+    }) }}
+
+    {# Totals row #}
+    {{ govukInsetText({
+      html: '<strong>Total: 42 schools &nbsp;|&nbsp; 123,456 pupils &nbsp;|&nbsp; All ready for publication</strong>'
+    }) }}
+
+    {# ── PAGINATION ── #}
+    {{ govukPagination({
+      previous: { href: "?page=1" },
+      next: { href: "?page=3" },
+      items: [
+        { number: 1, href: "?page=1" },
+        { number: 2, href: "?page=2", current: true },
+        { number: 3, href: "?page=3" },
+        { number: 4, href: "?page=4" },
+        { number: 5, href: "?page=5" }
+      ]
+    }) }}
+
+    {# ── REVIEW CHECKLIST ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-2">Review checklist</h2>
+    <p class="govuk-body">Confirm each item before approving publication.</p>
+
+    <form method="post" action="/admin-publication/publishing">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+      {{ govukCheckboxes({
+        name: "reviewChecklist",
+        items: [
+          {
+            value: "school-breakdown",
+            text: "School breakdown looks correct"
+          },
+          {
+            value: "record-counts",
+            text: "Record counts are as expected"
+          },
+          {
+            value: "no-gaps",
+            text: "No suspicious gaps or spikes in the data"
+          },
+          {
+            value: "ready-to-publish",
+            text: "I am satisfied this data is ready to publish to schools"
+          }
+        ]
+      }) }}
+
+      {# ── ACTIONS ── #}
+      <div class="govuk-button-group govuk-!-margin-top-2">
+        {{ govukButton({
+          text: "Approve and publish"
+        }) }}
+        {{ govukButton({
+          text: "Cancel",
+          classes: "govuk-button--secondary",
+          href: "/admin-publication"
+        }) }}
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

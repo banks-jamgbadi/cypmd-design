@@ -1,0 +1,61 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+Request submitted – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+{{ govukPhaseBanner({
+tag: { text: "Alpha" },
+html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+}) }}
+{{ govukBreadcrumbs({
+items: [
+{ text: "Home", href: "/home" },
+{ text: "Check your pupil data", href: "/check-data" }
+]
+}) }}
+<div style="text-align: right; margin-top: -28px;">
+    <a class="govuk-link" href="/sign-out">Sign out</a>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+        {{ govukPanel({
+        titleText: "Data amendment request submitted",
+        html: "Your reference number<br><strong>CYPMD_KS4_8784120</strong>"
+        }) }}
+
+        <p class="govuk-body govuk-!-margin-top-6">
+            We have sent you an email to confirm that you have successfully submitted a request.
+        </p>
+
+        {{ govukInsetText({
+        html: 'You still have until <strong>5pm on Friday 26 June 2026</strong> to request any further amendments if you
+        need to.'
+        }) }}
+
+        <p class="govuk-body">
+            <a class="govuk-link" href="/change-request/type">Request another amendment</a>
+            or
+            <a class="govuk-link" href="/amendment-requests">edit an existing request</a>.
+        </p>
+
+        <h2 class="govuk-heading-m govuk-!-margin-top-6">What happens next</h2>
+
+        <p class="govuk-body">After you submit your changes:</p>
+
+        <ul class="govuk-list govuk-list--bullet">
+            <li>the DfE will review any evidence you provide</li>
+            <li>you'll be able to track the status of your requests in the service</li>
+            <li>your school's performance data will be updated in the Autumn, if the request is approved</li>
+        </ul>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,239 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Publishing – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Publishing in progress</h1>
+
+    {# ── FILE SUMMARY ── #}
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "File name" },
+          value: { text: "ks4-june-2026-full-data.csv" }
+        },
+        {
+          key: { text: "Published by" },
+          value: { text: "Banks Jamgbadi" }
+        }
+      ]
+    }) }}
+
+    {# ── PROGRESS BAR ── #}
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Publishing progress</h2>
+
+    <div class="progress-bar-outer" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" aria-label="Publishing progress">
+      <div class="progress-bar-inner" id="progress-bar"></div>
+    </div>
+    <p class="govuk-body-s govuk-!-margin-top-1">
+      <span id="progress-percent">0%</span> complete &nbsp;|&nbsp;
+      <span id="schools-done">0</span> of 42 schools published
+    </p>
+
+    {# ── TIMING ── #}
+    <p class="govuk-body-s" style="color: #505A5F;">
+      Time elapsed: <strong id="time-elapsed">0 secs</strong>
+      &nbsp;|&nbsp;
+      ETA: <strong id="eta-text">Calculating...</strong>
+    </p>
+
+    {# ── STATUS MESSAGE ── #}
+    <p class="govuk-body" id="status-message">
+      <strong>Pushing JSON files to blob storage</strong> — do not navigate away from this page.
+    </p>
+
+    {# ── SCHOOL PUBLISHING STATUS LIST ── #}
+    <h2 class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-2">School status</h2>
+
+    <table class="govuk-table" id="schools-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header">School name</th>
+          <th class="govuk-table__header">LAESTAB</th>
+          <th class="govuk-table__header">Status</th>
+        
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body" id="schools-body">
+        {# Populated by JavaScript #}
+      </tbody>
+    </table>
+
+    {# ── SUMMARY COUNTS ── #}
+    <div class="govuk-!-margin-top-2">
+      {{ govukSummaryList({
+        rows: [
+          {
+            key: { text: "Successful" },
+            value: { html: '<span id="count-success">0</span>' }
+          },
+          {
+            key: { text: "Failed" },
+            value: { html: '<span id="count-failed">0</span>' }
+          },
+          {
+            key: { text: "Remaining" },
+            value: { html: '<span id="count-remaining">42</span>' }
+          }
+        ]
+      }) }}
+    </div>
+
+    {# ── CANCEL BUTTON ── #}
+    <div class="govuk-button-group govuk-!-margin-top-2">
+      {{ govukButton({
+        text: "Cancel publication",
+        classes: "govuk-button--warning",
+        href: "/admin-publication",
+        attributes: { id: "btn-cancel" }
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  var schools = [
+    { name: "Ashworth Academy",       laestab: "01/1001" },
+    { name: "Bramley High School",     laestab: "02/2034" },
+    { name: "Cedar Park Secondary",    laestab: "03/3012" },
+    { name: "Dawnfields College",      laestab: "04/4056" },
+    { name: "Eastbrook Academy",       laestab: "05/5023" },
+    { name: "Ferndale School",         laestab: "06/6078" },
+    { name: "Greenway Comprehensive",  laestab: "07/7045" },
+    { name: "Hillcrest Secondary",     laestab: "08/8091" },
+    { name: "Ironbridge High",         laestab: "09/9034" },
+    { name: "Juniper Academy",         laestab: "10/1023" },
+    { name: "Kingsford Secondary",     laestab: "11/1134" },
+    { name: "Langley Park School",     laestab: "12/1245" },
+    { name: "Moorside Academy",        laestab: "13/1356" },
+    { name: "Northgate High",          laestab: "14/1467" },
+    { name: "Oakfield College",        laestab: "15/1578" },
+    { name: "Parkview Comprehensive",  laestab: "16/1689" },
+    { name: "Queensbury Academy",      laestab: "17/1790" },
+    { name: "Riverdale School",        laestab: "18/1801" },
+    { name: "Stoneleigh Secondary",    laestab: "19/1912" },
+    { name: "Thornbury High School",   laestab: "20/2023" },
+    { name: "Underhill Academy",       laestab: "21/2134" },
+    { name: "Valley Park School",      laestab: "22/2245" },
+    { name: "Westfield Comprehensive", laestab: "23/2356" },
+    { name: "Xton Academy",            laestab: "24/2467" },
+    { name: "Yarrow High School",      laestab: "25/2578" },
+    { name: "Zetland Secondary",       laestab: "26/2689" },
+    { name: "Alderton School",         laestab: "27/2790" },
+    { name: "Birchwood Academy",       laestab: "28/2801" },
+    { name: "Castleton High",          laestab: "29/2912" },
+    { name: "Dunmore Comprehensive",   laestab: "30/3023" },
+    { name: "Elmwood Secondary",       laestab: "31/3134" },
+    { name: "Fairfield Academy",       laestab: "32/3245" },
+    { name: "Grasmere High School",    laestab: "33/3356" },
+    { name: "Hartfield College",       laestab: "34/3467" },
+    { name: "Inglewood Secondary",     laestab: "35/3578" },
+    { name: "Jasper Academy",          laestab: "36/3689" },
+    { name: "Kenilworth School",       laestab: "37/3790" },
+    { name: "Larchwood Comprehensive", laestab: "38/3801" },
+    { name: "Millbrook High",          laestab: "39/3912" },
+    { name: "Norwood Academy",         laestab: "40/4023" },
+    { name: "Orchard Secondary",       laestab: "41/4134" },
+    { name: "Pinewood School",         laestab: "42/4245" }
+  ];
+
+  var totalSchools  = schools.length;
+  var completed     = 0;
+  var failed        = 0;
+  var startTime     = Date.now();
+  var tbody         = document.getElementById("schools-body");
+
+  // Pre-populate all rows as queued
+  schools.forEach(function(school, i) {
+    var tr = document.createElement("tr");
+    tr.className = "govuk-table__row";
+    tr.id = "school-row-" + i;
+    tr.innerHTML =
+      '<td class="govuk-table__cell">' + school.name + '</td>' +
+      '<td class="govuk-table__cell">' + school.laestab + '</td>' +
+      '<td class="govuk-table__cell" id="school-status-' + i + '">' +
+        '<strong class="govuk-tag govuk-tag--grey">Queued</strong>' 
+   
+    tbody.appendChild(tr);
+  });
+
+  // Timer
+  var timerInterval = setInterval(function() {
+    var elapsed = Math.floor((Date.now() - startTime) / 1000);
+    var mins    = Math.floor(elapsed / 60);
+    var secs    = elapsed % 60;
+    document.getElementById("time-elapsed").textContent =
+      mins > 0 ? mins + " min " + secs + " secs" : secs + " secs";
+    var remaining = totalSchools - completed - failed;
+    document.getElementById("eta-text").textContent = remaining > 0
+      ? "~" + remaining + " seconds remaining"
+      : "Almost done...";
+  }, 1000);
+
+  // Publish each school one by one
+  schools.forEach(function(school, i) {
+    var delay = 400 + i * 300;
+
+    // First mark as publishing
+    setTimeout(function() {
+      document.getElementById("school-status-" + i).innerHTML =
+        '<strong class="govuk-tag govuk-tag--blue">Publishing</strong>';
+    }, delay);
+
+    // Then mark as published
+    setTimeout(function() {
+      document.getElementById("school-status-" + i).innerHTML =
+        '<strong class="govuk-tag govuk-tag--green">Published</strong>';
+   
+      completed++;
+      var pct = Math.round((completed / totalSchools) * 100);
+      document.getElementById("progress-bar").style.width = pct + "%";
+      document.getElementById("progress-percent").textContent = pct + "%";
+      document.getElementById("schools-done").textContent = completed;
+      document.getElementById("count-success").textContent = completed;
+      document.getElementById("count-remaining").textContent = totalSchools - completed - failed;
+      document.querySelector(".progress-bar-outer").setAttribute("aria-valuenow", pct);
+
+      // All done
+      if (completed + failed === totalSchools) {
+        clearInterval(timerInterval);
+        document.getElementById("status-message").innerHTML =
+          "<strong>Publication complete</strong> — redirecting...";
+        document.getElementById("btn-cancel").style.display = "none";
+        setTimeout(function() {
+          window.location.href = "/admin-publication/complete";
+        }, 1200);
+      }
+    }, delay + 400);
+  });
+</script>
+{% endblock %}

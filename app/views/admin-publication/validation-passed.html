@@ -1,0 +1,124 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Validation passed – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-publication") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    {# ── SUCCESS PANEL ── #}
+    {{ govukPanel({
+      titleText: "Validation passed",
+      html: "KS4 June 2026<br><strong>ks4-june-2026-full-data.csv</strong>"
+    }) }}
+
+    {# ── FILE SUMMARY (read-only) ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-6">File details</h2>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "File name" },
+          value: { text: "ks4-june-2026-full-data.csv" }
+        },
+        {
+          key: { text: "File size" },
+          value: { text: "24.5 MB" }
+        },
+        {
+          key: { text: "Status" },
+          value: {
+            html: '<strong class="govuk-tag govuk-tag--green">Quality checks passed</strong>'
+          }
+        }
+      ]
+    }) }}
+
+    {# ── VALIDATION RESULTS ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-2">Validation results</h2>
+
+    {{ govukTable({
+      head: [
+        { text: "Check" },
+        { text: "Result" },
+        { text: "Detail" }
+      ],
+      rows: [
+        [
+          { text: "Total rows" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' },
+          { text: "125,480" }
+        ],
+        [
+          { text: "Rows valid" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' },
+          { text: "125,479" }
+        ],
+        [
+          { text: "Corrupted rows" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' },
+          { text: "0" }
+        ],
+        [
+          { text: "Required columns" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' },
+          { text: "All present" }
+        ],
+        [
+          { text: "LAESTAB format" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' },
+          { text: "Valid" }
+        ],
+        [
+          { text: "P_INCL values" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' },
+          { text: "Valid" }
+        ],
+        [
+          { text: "Key field completeness" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Passed</strong>' },
+          { text: "No missing fields" }
+        ]
+      ]
+    }) }}
+
+    
+    {# ── ACTIONS ── #}
+    <div class="govuk-button-group govuk-!-margin-top-6">
+      {{ govukButton({
+        text: "Proceed to processing",
+        href: "/admin-publication/processing"
+      }) }}
+      {{ govukButton({
+        text: "Cancel",
+        classes: "govuk-button--secondary",
+        href: "/admin-publication"
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

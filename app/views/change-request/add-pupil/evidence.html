@@ -1,0 +1,146 @@
+{% extends "layouts/main.html" %}
+
+{% block pageTitle %}
+  Add a pupil – evidence – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+  {{ govukBreadcrumbs({
+    items: [
+      { text: "Home", href: "/home" },
+      { text: "Check your pupil data", href: "/check-data" }
+    ]
+  }) }}
+  <div style="text-align: right; margin-top: -28px;">
+    <a class="govuk-link" href="/sign-out">Sign out</a>
+  </div>
+{% endblock %}
+
+{% block content %}
+
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+
+      <a class="govuk-back-link" href="/change-request/add-pupil/cohort">Back</a>
+
+      <span class="govuk-caption-l govuk-!-margin-top-4">Add pupil</span>
+      <h1 class="govuk-heading-l">Provide evidence for the addition of  Billy B</h1>
+
+      <form method="post" action="/change-request/add-pupil/evidence" enctype="multipart/form-data">
+        <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+        {# ── UPLOAD FILES ── #}
+        <h2 class="govuk-heading-m">Upload files (Optional)</h2>
+        <p class="govuk-body">Evidence must be in PDF format and no more than 6 pages (either as 1 or multiple files).</p>
+        
+
+        {# File table #}
+        <table class="govuk-table govuk-!-margin-bottom-2">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">File name</th>
+              <th class="govuk-table__header">File size</th>
+              <th class="govuk-table__header">Type</th>
+              <th class="govuk-table__header">Action</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body" id="file-list">
+            {# Populated by JavaScript when files are added #}
+          </tbody>
+        </table>
+
+        {# File input #}
+        <div class="govuk-form-group">
+          <input class="govuk-file-upload" id="file-upload" name="fileUpload" type="file" accept=".pdf" multiple>
+        </div>
+        <p class="govuk-body-s" id="file-count">0 file(s) added</p>
+
+        {# ── REASON ── #}
+        <div class="govuk-form-group govuk-!-margin-top-6">
+          <label class="govuk-label govuk-label--s" for="reason">
+            Explain why this pupil should be added
+          </label>
+          <textarea class="govuk-textarea" id="reason" name="reason" rows="6" maxlength="1000"
+            aria-describedby="reason-info"></textarea>
+          <div id="reason-info" class="govuk-hint govuk-!-margin-top-1">
+            You have <span id="char-count">1,000</span> characters remaining
+          </div>
+        </div>
+
+        {# ── ACTIONS ── #}
+        <div class="govuk-button-group govuk-!-margin-top-4">
+          {{ govukButton({ text: "Continue" }) }}
+          {{ govukButton({
+            text: "Save and continue later",
+            classes: "govuk-button--secondary",
+            href: "/check-data"
+          }) }}
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  // ── Character countdown ──
+  var textarea  = document.getElementById("reason");
+  var charCount = document.getElementById("char-count");
+  var maxChars  = 1000;
+
+  textarea.addEventListener("input", function() {
+    var remaining = maxChars - this.value.length;
+    charCount.textContent = remaining.toLocaleString();
+    charCount.parentElement.style.color = remaining < 50 ? "#d4351c" : "";
+  });
+
+  // ── File upload list ──
+  var fileInput = document.getElementById("file-upload");
+  var fileList  = document.getElementById("file-list");
+  var fileCount = document.getElementById("file-count");
+  var uploadedFiles = [];
+
+  fileInput.addEventListener("change", function() {
+    Array.from(this.files).forEach(function(file) {
+      uploadedFiles.push(file);
+    });
+    renderFileList();
+    fileInput.value = "";
+  });
+
+  function renderFileList() {
+    fileList.innerHTML = "";
+    uploadedFiles.forEach(function(file, i) {
+      var sizeKB = (file.size / 1024).toFixed(1) + " KB";
+      var ext    = file.name.split(".").pop().toUpperCase();
+      var tr = document.createElement("tr");
+      tr.className = "govuk-table__row";
+      tr.innerHTML =
+        '<td class="govuk-table__cell">' + file.name + '</td>' +
+        '<td class="govuk-table__cell">' + sizeKB + '</td>' +
+        '<td class="govuk-table__cell">' + ext + '</td>' +
+        '<td class="govuk-table__cell">' +
+          '<a href="#" class="govuk-link remove-file" data-index="' + i + '">Remove</a>' +
+        '</td>';
+      fileList.appendChild(tr);
+    });
+
+    fileCount.textContent = uploadedFiles.length + " file(s) added";
+
+    fileList.querySelectorAll(".remove-file").forEach(function(link) {
+      link.addEventListener("click", function(e) {
+        e.preventDefault();
+        uploadedFiles.splice(parseInt(this.dataset.index), 1);
+        renderFileList();
+      });
+    });
+  }
+</script>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% macro adminSidebar(activeLink) %}
+<nav class="admin-sidebar">
+  <p class="govuk-body-s admin-sidebar__section-label">Administration</p>
+  <ul class="govuk-list admin-sidebar__list">
+
+    <li class="admin-sidebar__item">
+      <span class="admin-sidebar__toggle">
+        <span class="admin-sidebar__icon">+</span>
+        <span class="admin-sidebar__link-text">CMS administration</span>
+      </span>
+    </li>
+
+    <li class="admin-sidebar__item">
+      <span class="admin-sidebar__toggle">
+        <span class="admin-sidebar__icon">+</span>
+        <span class="admin-sidebar__link-text">System administration</span>
+      </span>
+    </li>
+
+    <li class="admin-sidebar__item">
+      <span class="admin-sidebar__toggle">
+        <span class="admin-sidebar__icon">+</span>
+        <a class="govuk-link admin-sidebar__link-text" href="/admin/storage">Storage administration</a>
+      </span>
+      <ul class="admin-sidebar__sub-list">
+        <li>
+          <a class="govuk-link admin-sidebar__sub-link
+            {% if activeLink == 'blob-storage' %}admin-sidebar__sub-link--active{% endif %}"
+            href="/admin/blob-storage">Blob storage</a>
+        </li>
+      </ul>
+    </li>
+
+    <li class="admin-sidebar__item">
+      <span class="admin-sidebar__toggle">
+        <span class="admin-sidebar__icon">+</span>
+        <a class="govuk-link admin-sidebar__link-text" href="/admin/publication">Publication administration</a>
+      </span>
+      <ul class="admin-sidebar__sub-list">
+        <li>
+          <a class="govuk-link admin-sidebar__sub-link
+            {% if activeLink == 'data-publication' %}admin-sidebar__sub-link--active{% endif %}"
+            href="/admin-publication">Data publication</a>
+        </li>
+         <li>
+          <a class="govuk-link admin-sidebar__sub-link
+            {% if activeLink == 'audit-logs' %}admin-sidebar__sub-link--active{% endif %}"
+            href="/admin-publication/audit-log">Audit log</a>
+        </li>
+      </ul>
+    </li>
+    
+
+  </ul>
+</nav>
+{% endmacro %}
