@@ -1,0 +1,76 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Logged in schools – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("dashboard") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <a class="govuk-back-link" href="/admin-dashboard">Back to dashboard</a>
+
+    <h1 class="govuk-heading-xl govuk-!-margin-top-4">Logged in</h1>
+    
+
+   
+    {# ── SEARCH ── #}
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="search-schools">
+        Search by school name or Laestab
+      </label>
+      <div style="display: flex; gap: 10px; align-items: flex-end;">
+        <input class="govuk-input" id="search-schools" name="searchSchools" type="text" style="max-width: 20em;">
+        {{ govukButton({
+          text: "Search",
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+        }) }}
+      </div>
+    </div>
+
+    {# ── TABLE ── #}
+    {{ govukTable({
+      head: [
+        { text: "School name" },
+        { text: "Laestab" },
+        { text: "Last login" }
+      ],
+      rows: [
+        [{ text: "Ashworth Academy" },     { text: "011001" }, { text: "8 Jun 2026, 09:14" }],
+        [{ text: "Bramley High School" },   { text: "022034" }, { text: "7 Jun 2026, 16:02" }],
+        [{ text: "Cedar Park Secondary" },  { text: "033012" }, { text: "8 Jun 2026, 11:45" }],
+        [{ text: "Juniper Academy" },       { text: "101023" }, { text: "8 Jun 2026, 09:02" }],
+        [{ text: "Ironbridge High" },       { text: "099034" }, { text: "7 Jun 2026, 14:55" }],
+        [{ text: "Kingsford Secondary" },   { text: "111134" }, { text: "3 Jun 2026, 10:18" }]
+      ]
+    }) }}
+
+    {# ── PAGINATION ── #}
+    {{ govukPagination({
+      next: { href: "?page=2" },
+      items: [
+        { number: 1, href: "?page=1", current: true },
+        { number: 2, href: "?page=2" }
+      ]
+    }) }}
+
+  </div>
+</div>
+
+{% endblock %}

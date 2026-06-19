@@ -1,0 +1,79 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Requests requiring scrutiny – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("dashboard") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <a class="govuk-back-link" href="/admin-dashboard">Back to dashboard</a>
+
+    <h1 class="govuk-heading-xl govuk-!-margin-top-4">Requiring scrutiny</h1>
+   
+    {# ── SEARCH ── #}
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="search-requests">
+        Search by reference number, school name or pupil name
+      </label>
+      <div style="display: flex; gap: 10px; align-items: flex-end;">
+        <input class="govuk-input" id="search-requests" name="searchRequests" type="text" style="max-width: 20em;">
+        {{ govukButton({
+          text: "Search",
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+        }) }}
+      </div>
+    </div>
+
+    {# ── TABLE ── #}
+    {{ govukTable({
+      head: [
+        { text: "Reference" },
+        { text: "School name" },
+        { text: "Laestab" },
+        { text: "Pupil" },
+        { text: "Request type" },
+        { text: "Status" }
+      ],
+      rows: [
+        [
+          { text: "CR-10422" }, { text: "Juniper Academy" }, { text: "101023" },
+          { text: "Jack Grealish" }, { text: "Remove pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--yellow">Pending scrutiny</strong>' }
+        ],
+        [
+          { text: "CR-10405" }, { text: "Bramley High School" }, { text: "022034" },
+          { text: "Trent Alexander-Arnold" }, { text: "Remove pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--yellow">Pending scrutiny</strong>' }
+        ]
+      ]
+    }) }}
+
+    {# ── PAGINATION ── #}
+    {{ govukPagination({
+      items: [
+        { number: 1, href: "?page=1", current: true }
+      ]
+    }) }}
+
+  </div>
+</div>
+
+{% endblock %}

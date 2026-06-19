@@ -1,0 +1,74 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Not logged in – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("dashboard") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <a class="govuk-back-link" href="/admin-dashboard">Back to dashboard</a>
+
+    <h1 class="govuk-heading-xl govuk-!-margin-top-4">Not logged in</h1>
+   
+
+    {# ── SEARCH ── #}
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="search-schools">
+        Search by school name or Laestab
+      </label>
+      <div style="display: flex; gap: 10px; align-items: flex-end;">
+        <input class="govuk-input" id="search-schools" name="searchSchools" type="text" style="max-width: 20em;">
+        {{ govukButton({
+          text: "Search",
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+        }) }}
+      </div>
+    </div>
+
+    {# ── TABLE ── #}
+    {{ govukTable({
+      head: [
+        { text: "School name" },
+        { text: "Laestab" }
+      ],
+      rows: [
+        [{ text: "Ferndale School" },          { text: "066078" }],
+        [{ text: "Greenway Comprehensive" },   { text: "077045" }],
+        [{ text: "Hillcrest Secondary" },      { text: "088091" }],
+        [{ text: "Dawnfields College" },       { text: "044056" }],
+        [{ text: "Eastbrook Academy" },        { text: "055023" }],
+        [{ text: "Northgate High" },           { text: "141467" }]
+      ]
+    }) }}
+
+    {# ── PAGINATION ── #}
+    {{ govukPagination({
+      next: { href: "?page=2" },
+      items: [
+        { number: 1, href: "?page=1", current: true },
+        { number: 2, href: "?page=2" }
+      ]
+    }) }}
+
+  </div>
+</div>
+
+{% endblock %}

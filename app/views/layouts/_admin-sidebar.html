@@ -3,6 +3,16 @@
   <p class="govuk-body-s admin-sidebar__section-label">Administration</p>
   <ul class="govuk-list admin-sidebar__list">
 
+
+    <li class="admin-sidebar__item">
+      <span class="admin-sidebar__toggle">
+        <span class="admin-sidebar__icon">+</span>
+        <a class="govuk-link admin-sidebar__link-text
+          {% if activeLink == 'dashboard' %}admin-sidebar__sub-link--active{% endif %}"
+          href="/admin-dashboard">Dashboard</a>
+      </span>
+    </li>
+
     <li class="admin-sidebar__item">
       <span class="admin-sidebar__toggle">
         <span class="admin-sidebar__icon">+</span>
@@ -42,14 +52,14 @@
             {% if activeLink == 'data-publication' %}admin-sidebar__sub-link--active{% endif %}"
             href="/admin-publication">Data publication</a>
         </li>
-         <li>
+        <li>
           <a class="govuk-link admin-sidebar__sub-link
             {% if activeLink == 'audit-logs' %}admin-sidebar__sub-link--active{% endif %}"
             href="/admin-publication/audit-log">Audit log</a>
         </li>
       </ul>
     </li>
-    
+
 
   </ul>
 </nav>

@@ -1,0 +1,147 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Total pupil amendment requests – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("dashboard") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <a class="govuk-back-link" href="/admin-dashboard">Back to dashboard</a>
+
+    <h1 class="govuk-heading-xl govuk-!-margin-top-4">Total pupil amendment requests</h1>
+   
+    {# ── FILTERS ── #}
+    <div class="govuk-grid-row govuk-!-margin-bottom-4">
+      <div class="govuk-grid-column-one-half">
+        {{ govukSelect({
+          id: "filter-status",
+          name: "filterStatus",
+          label: { text: "Filter by status" },
+          items: [
+            { value: "",                text: "All statuses", selected: true },
+            { value: "submitted",       text: "Submitted" },
+            { value: "auto-approved",   text: "Auto-approved" },
+            { value: "auto-rejected",   text: "Auto-rejected" },
+            { value: "pending-scrutiny",text: "Pending scrutiny" }
+          ]
+        }) }}
+      </div>
+      <div class="govuk-grid-column-one-half">
+        {{ govukSelect({
+          id: "filter-type",
+          name: "filterType",
+          label: { text: "Filter by request type" },
+          items: [
+            { value: "",            text: "All types", selected: true },
+            { value: "add-pupil",   text: "Add pupil" },
+            { value: "include",     text: "Include pupil" },
+            { value: "remove",      text: "Remove pupil" }
+          ]
+        }) }}
+      </div>
+    </div>
+
+    {# ── SEARCH ── #}
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="search-requests">
+        Search by reference number, school name or pupil name
+      </label>
+      <div style="display: flex; gap: 10px; align-items: flex-end;">
+        <input class="govuk-input" id="search-requests" name="searchRequests" type="text" style="max-width: 20em;">
+        {{ govukButton({
+          text: "Search",
+          classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+        }) }}
+      </div>
+    </div>
+
+    {# ── TABLE ── #}
+    {{ govukTable({
+      head: [
+        { text: "Reference" },
+        { text: "School name" },
+        { text: "Laestab" },
+        { text: "Pupil" },
+        { text: "Request type" },
+        { text: "Status" },
+        { text: "Date" }
+      ],
+      rows: [
+        [
+          { text: "CR-10421" }, { text: "Ashworth Academy" }, { text: "011001" },
+          { text: "Harry Maguire" }, { text: "Add pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--blue">Submitted</strong>' },
+          { text: "8 Jun 2026" }
+        ],
+        [
+          { text: "CR-10422" }, { text: "Juniper Academy" }, { text: "101023" },
+          { text: "Jack Grealish" }, { text: "Remove pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--yellow">Pending scrutiny</strong>' },
+          { text: "8 Jun 2026" }
+        ],
+        [
+          { text: "CR-10423" }, { text: "Ironbridge High" }, { text: "099034" },
+          { text: "Phil Foden" }, { text: "Include pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--red">Auto-rejected</strong>' },
+          { text: "7 Jun 2026" }
+        ],
+        [
+          { text: "CR-10418" }, { text: "Juniper Academy" }, { text: "101023" },
+          { text: "Kobbie Mainoo" }, { text: "Include pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Auto-approved</strong>' },
+          { text: "8 Jun 2026" }
+        ],
+        [
+          { text: "CR-10409" }, { text: "Cedar Park Secondary" }, { text: "033012" },
+          { text: "Jude Bellingham" }, { text: "Add pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--red">Auto-rejected</strong>' },
+          { text: "7 Jun 2026" }
+        ],
+        [
+          { text: "CR-10401" }, { text: "Ashworth Academy" }, { text: "011001" },
+          { text: "Declan Rice" }, { text: "Add pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--green">Auto-approved</strong>' },
+          { text: "6 Jun 2026" }
+        ],
+        [
+          { text: "CR-10398" }, { text: "Ashworth Academy" }, { text: "011001" },
+          { text: "Jarrod Bowen" }, { text: "Remove pupil" },
+          { html: '<strong class="govuk-tag govuk-tag--blue">Submitted</strong>' },
+          { text: "6 Jun 2026" }
+        ]
+      ]
+    }) }}
+
+    {# ── PAGINATION ── #}
+    {{ govukPagination({
+      next: { href: "?page=2" },
+      items: [
+        { number: 1, href: "?page=1", current: true },
+        { number: 2, href: "?page=2" },
+        { number: 3, href: "?page=3" },
+        { number: 4, href: "?page=4" }
+      ]
+    }) }}
+
+  </div>
+</div>
+
+{% endblock %}

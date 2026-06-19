@@ -1,0 +1,80 @@
+// ── Dashboard metric cards ─────────────────────────────────────────
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+}
+
+.metric-card {
+  border: 1px solid #b1b4b6;
+  border-left: 5px solid #1d70b8;
+  background: #f8f8f8;
+  padding: 20px;
+}
+
+.metric-card__value {
+  font-size: 36px;
+  font-weight: bold;
+  color: #0b0c0c;
+  margin: 0 0 5px 0;
+  line-height: 1.1;
+}
+
+.metric-card__label {
+  font-size: 16px;
+  color: #505a5f;
+  margin: 0;
+}
+
+.metric-card--success {
+  border-left-color: #00703c;
+}
+
+.metric-card--success .metric-card__value {
+  color: #00703c;
+}
+
+.metric-card--warning {
+  border-left-color: #f47738;
+}
+
+.metric-card--warning .metric-card__value {
+  color: #f47738;
+}
+
+.metric-card--error {
+  border-left-color: #d4351c;
+}
+
+.metric-card--error .metric-card__value {
+  color: #d4351c;
+}
+
+.metric-card--info {
+  border-left-color: #5694ca;
+}
+
+.metric-card--info .metric-card__value {
+  color: #1d70b8;
+}
+
+// ── Clickable metric cards ─────────────────────────────────────────
+
+.metric-card__link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.metric-card__link:hover {
+  border-color: #1d70b8;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+
+.metric-card__link:visited {
+  color: inherit;
+}

@@ -1,0 +1,134 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+Dashboard – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+{{ govukPhaseBanner({
+tag: { text: "Alpha" },
+html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+    {# ── LEFT SIDEBAR ── #}
+    <div class="govuk-grid-column-one-quarter">
+        {{ adminSidebar("dashboard") }}
+    </div>
+
+    {# ── MAIN CONTENT ── #}
+    <div class="govuk-grid-column-three-quarters">
+
+        <h1 class="govuk-heading-xl">Dashboard</h1>
+        <p class="govuk-body">Overview of schools and their amendment requests.</p>
+
+        {# ── CHECKING WINDOW SELECTOR ── #}
+        <div class="govuk-form-group govuk-!-margin-bottom-6" style="max-width: 350px;">
+            {{ govukSelect({
+            id: "checking-window-select",
+            name: "checkingWindow",
+            label: {
+            text: "Checking window",
+            classes: "govuk-label--s"
+            },
+            items: [
+            { value: "ks4-june-2026", text: "KS4 June 2026", selected: true },
+            { value: "ks4-autumn-2026", text: "KS4 Autumn 2026" },
+            { value: "ks2-2026", text: "KS2 2026" },
+            { value: "16-18-2026", text: "16-18 2026" }
+            ]
+            }) }}
+        </div>
+
+        {# ── LAST REFRESHED ── #}
+        <p class="govuk-body-s govuk-!-margin-bottom-6" style="color:#505A5F;">
+            Dashboard last refreshed: <strong>8 June 2026 at 14:30</strong> &nbsp;|&nbsp; Next refresh in <strong
+                id="refresh-countdown">15:00</strong>
+        </p>
+
+        {# ── SECTION 1: SCHOOL ENGAGEMENT ── #}
+        <h2 class="govuk-heading-m">School engagement</h2>
+
+        <div class="metric-grid govuk-!-margin-bottom-6">
+
+            <a href="/eligible-schools" class="metric-card metric-card__link">
+                <p class="metric-card__value">156</p>
+                <p class="metric-card__label">Eligible schools</p>
+            </a>
+
+            <a href="/logged-in" class="metric-card metric-card--success metric-card__link">
+                <p class="metric-card__value">132</p>
+                <p class="metric-card__label">Logged in</p>
+            </a>
+
+            <a href="/not-logged-in" class="metric-card metric-card--warning metric-card__link">
+                <p class="metric-card__value">24</p>
+                <p class="metric-card__label">Not logged in</p>
+            </a>
+
+            <a href="/submitted-amendments" class="metric-card metric-card--success metric-card__link">
+                <p class="metric-card__value">98</p>
+                <p class="metric-card__label">Schools with at least one submission</p>
+            </a>
+
+            <a href="/logged-in-not-submitted" class="metric-card metric-card--warning metric-card__link">
+                <p class="metric-card__value">34</p>
+                <p class="metric-card__label">Logged in (not submitted)</p>
+            </a>
+
+        </div>
+
+        {# ── SECTION 2: AMENDMENT REQUESTS ── #}
+        <h2 class="govuk-heading-m">Amendment requests</h2>
+
+        <div class="metric-grid govuk-!-margin-bottom-6">
+
+            <a href="/total-amendment-requests" class="metric-card metric-card__link">
+                <p class="metric-card__value">412</p>
+                <p class="metric-card__label">Total individual pupil amendment requests</p>
+            </a>
+
+            <a href="/auto-approved" class="metric-card metric-card--success metric-card__link">
+                <p class="metric-card__value">287</p>
+                <p class="metric-card__label">Auto-approved</p>
+            </a>
+
+            <a href="/auto-rejected" class="metric-card metric-card--error metric-card__link">
+                <p class="metric-card__value">41</p>
+                <p class="metric-card__label">Auto-rejected</p>
+            </a>
+
+            <a href="/requiring-scrutiny" class="metric-card metric-card--info metric-card__link">
+                <p class="metric-card__value">84</p>
+                <p class="metric-card__label">Requiring scrutiny</p>
+            </a>
+
+        </div>
+
+
+
+    </div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+    // Simple countdown display for next refresh (cosmetic only in prototype)
+    var remaining = 15 * 60;
+    var countdownEl = document.getElementById("refresh-countdown");
+
+    setInterval(function () {
+        remaining--;
+        if (remaining < 0) { remaining = 15 * 60; }
+        var mins = Math.floor(remaining / 60);
+        var secs = remaining % 60;
+        countdownEl.textContent = mins + ":" + (secs < 10 ? "0" : "") + secs;
+    }, 1000);
+</script>
+{% endblock %}
