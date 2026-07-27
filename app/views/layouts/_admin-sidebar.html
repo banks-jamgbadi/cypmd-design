@@ -3,7 +3,7 @@
   <p class="govuk-body-s admin-sidebar__section-label">Administration</p>
   <ul class="govuk-list admin-sidebar__list">
 
-
+    {# Dashboard #}
     <li class="admin-sidebar__item">
       <span class="admin-sidebar__toggle">
         <span class="admin-sidebar__icon">+</span>
@@ -13,6 +13,7 @@
       </span>
     </li>
 
+    {# CMS administration #}
     <li class="admin-sidebar__item">
       <span class="admin-sidebar__toggle">
         <span class="admin-sidebar__icon">+</span>
@@ -20,6 +21,7 @@
       </span>
     </li>
 
+    {# System administration #}
     <li class="admin-sidebar__item">
       <span class="admin-sidebar__toggle">
         <span class="admin-sidebar__icon">+</span>
@@ -27,6 +29,7 @@
       </span>
     </li>
 
+    {# Storage administration #}
     <li class="admin-sidebar__item">
       <span class="admin-sidebar__toggle">
         <span class="admin-sidebar__icon">+</span>
@@ -41,6 +44,7 @@
       </ul>
     </li>
 
+    {# Publication administration #}
     <li class="admin-sidebar__item">
       <span class="admin-sidebar__toggle">
         <span class="admin-sidebar__icon">+</span>
@@ -54,12 +58,21 @@
         </li>
         <li>
           <a class="govuk-link admin-sidebar__sub-link
-            {% if activeLink == 'audit-logs' %}admin-sidebar__sub-link--active{% endif %}"
+            {% if activeLink == 'audit-log' %}admin-sidebar__sub-link--active{% endif %}"
             href="/admin-publication/audit-log">Audit log</a>
         </li>
       </ul>
     </li>
 
+    {# Data egress #}
+    <li class="admin-sidebar__item">
+      <span class="admin-sidebar__toggle">
+        <span class="admin-sidebar__icon">+</span>
+        <a class="govuk-link admin-sidebar__link-text
+          {% if activeLink == 'data-egress' %}admin-sidebar__sub-link--active{% endif %}"
+          href="/admin-egress/pull">Data egress</a>
+      </span>
+    </li>
 
   </ul>
 </nav>

@@ -49,3 +49,23 @@ router.post('/change-request/add-pupil/found-included', (req, res) => {
 router.post('/change-request/add-pupil/submitted', (req, res) => {
   res.redirect('/change-request/add-pupil/submitted')
 })
+
+router.get('/admin-egress/pull', (req, res) => {
+  res.render('admin-egress/pull')
+})
+
+router.post('/admin-egress/pull', (req, res) => {
+  res.redirect('/admin-egress/results')
+})
+
+router.post('/admin-egress/results', (req, res) => {
+  res.redirect('/admin-egress/preprocessing')
+})
+
+router.post('/admin-egress/summary', (req, res) => {
+  res.redirect('/admin-egress/complete')
+})
+
+router.post('/admin-egress/summary', (req, res) => {
+  res.redirect('/admin-egress/complete')
+})

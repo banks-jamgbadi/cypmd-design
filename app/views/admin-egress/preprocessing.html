@@ -1,0 +1,140 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+Preprocessing data – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+{{ govukPhaseBanner({
+tag: { text: "Alpha" },
+html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+}) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-egress") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Preprocessing data</h1>
+    <p class="govuk-body">KS4 June 2026: Do not navigate away from this page.</p>
+
+    {# ── PROGRESS BAR ── #}
+    <h2 class="govuk-heading-s govuk-!-margin-bottom-1">Preprocessing progress</h2>
+
+    <div class="progress-bar-outer" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+      aria-label="Preprocessing progress">
+      <div class="progress-bar-inner" id="progress-bar"></div>
+    </div>
+    <p class="govuk-body-s govuk-!-margin-top-1">
+      <span id="progress-percent">0%</span> complete
+    </p>
+
+    {# ── STEPS LIST ── #}
+    <h2 class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-2">Steps</h2>
+
+    <ul class="govuk-list" id="steps-list">
+      <li class="check-item" data-delay="800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Filter records</span>
+      </li>
+      <li class="check-item" data-delay="2000">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Strip trailing underscores</span>
+      </li>
+      <li class="check-item" data-delay="3200">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Split DfE Establishment Number</span>
+      </li>
+      <li class="check-item" data-delay="4400">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Standardise date formats</span>
+      </li>
+      <li class="check-item" data-delay="5600">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Reorder columns to match LDS spec</span>
+      </li>
+      <li class="check-item" data-delay="6800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Remove unwanted columns</span>
+      </li>
+      <li class="check-item" data-delay="6800">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Remove unwanted characters</span>
+      </li>
+      <li class="check-item" data-delay="8000">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Validate against LDS spec</span>
+      </li>
+
+      <li class="check-item" data-delay="9200">
+        <span class="check-icon"><span class="check-icon--spinner"></span></span>
+        <span class="check-label">Save to database</span>
+      </li>
+
+
+    </ul>
+
+
+
+
+    {# ── ACTIONS ── #}
+    <div class="govuk-button-group govuk-!-margin-top-4">
+      {{ govukButton({
+      text: "Continue",
+      attributes: { id: "btn-proceed", disabled: true }
+      }) }}
+      {{ govukButton({
+      text: "Cancel",
+      classes: "govuk-button--secondary",
+      href: "/admin-egress/pull"
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  var totalSteps = document.querySelectorAll(".check-item").length;
+  var completed = 0;
+  var btnProceed = document.getElementById("btn-proceed");
+
+  btnProceed.setAttribute("disabled", true);
+  btnProceed.classList.add("govuk-button--disabled");
+  btnProceed.setAttribute("aria-disabled", "true");
+
+  document.querySelectorAll(".check-item").forEach(function (item) {
+    setTimeout(function () {
+      item.querySelector(".check-icon").innerHTML = "✓";
+      item.classList.add("check-item--done");
+      completed++;
+
+      var pct = Math.round((completed / totalSteps) * 100);
+      document.getElementById("progress-bar").style.width = pct + "%";
+      document.getElementById("progress-percent").textContent = pct + "%";
+      document.querySelector(".progress-bar-outer").setAttribute("aria-valuenow", pct);
+
+      if (completed === totalSteps) {
+
+        btnProceed.removeAttribute("disabled");
+        btnProceed.classList.remove("govuk-button--disabled");
+        btnProceed.removeAttribute("aria-disabled");
+        btnProceed.addEventListener("click", function () {
+          window.location.href = "/admin-egress/summary";
+        });
+      }
+    }, parseInt(item.dataset.delay, 10));
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Transfer complete – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-egress") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    {# ── SUCCESS PANEL ── #}
+    {{ govukPanel({
+      titleText: "Transfer complete",
+      html: "Files successfully transferred to LDS blob storage"
+    }) }}
+
+    {# ── TRANSFER SUMMARY ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-6">Transfer summary</h2>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "Transferred by" },
+          value: { text: "Banks Jamgbadi" }
+        },
+        {
+          key: { text: "Transferred at" },
+          value: { text: "8 June 2026 at 14:38 UTC" }
+        },
+        {
+          key: { text: "Target container" },
+          value: { text: "cypmd/extracts_input" }
+        },
+        {
+          key: { text: "Files transferred" },
+          value: { text: "2" }
+        },
+        {
+          key: { text: "Status" },
+          value: { html: '<strong class="govuk-tag govuk-tag--green">Success</strong>' }
+        }
+      ]
+    }) }}
+
+    {# ── ACTIONS ── #}
+    {{ govukButton({
+      text: "Start a new egress",
+      href: "/admin-egress/pull"
+    }) }}
+
+  </div>
+</div>
+
+{% endblock %}

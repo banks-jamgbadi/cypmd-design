@@ -1,0 +1,108 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Confirm transfer to LDS – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-egress") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Confirm transfer to LDS</h1>
+    <p class="govuk-body">Review the details below before transferring data to LDS blob storage.</p>
+
+    {# ── TRANSFER DETAILS ── #}
+    <h2 class="govuk-heading-m">Transfer details</h2>
+
+    {{ govukSummaryList({
+      rows: [
+        {
+          key: { text: "Checking window" },
+          value: { text: "KS4 June 2026" }
+        },
+        {
+          key: { text: "Preprocessed on" },
+          value: { text: "8 June 2026 at 14:35" }
+        },
+        {
+          key: { text: "Target container" },
+          value: { text: "cypmd/extracts_input" }
+        },
+        {
+          key: { text: "Transferred by" },
+          value: { text: "Banks Jamgbadi" }
+        }
+      ]
+    }) }}
+
+    {# ── FILES TO BE TRANSFERRED ── #}
+    <h2 class="govuk-heading-m govuk-!-margin-top-2">Files to be transferred</h2>
+    
+
+    <table class="govuk-table">
+      <thead class="govuk-table__head">
+        <tr class="govuk-table__row">
+          <th class="govuk-table__header">Output type</th>
+          <th class="govuk-table__header">File name</th>
+        </tr>
+      </thead>
+      <tbody class="govuk-table__body">
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">New learners</td>
+          <td class="govuk-table__cell">
+            <a class="govuk-link" href="/admin-egress/preview/new-learners">
+              CYPMD_LDS_KS4_NewLearners_2026_06_08.csv
+            </a>
+          </td>
+        </tr>
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">Remove learners</td>
+          <td class="govuk-table__cell">
+            <a class="govuk-link" href="/admin-egress/preview/remove-learners">
+              CYPMD_LDS_KS4_RemoveLearners_2026_06_08.csv
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    {# ── INSET WARNING ── #}
+    {{ govukInsetText({
+      text: "Once confirmed, these files will be uploaded to LDS blob storage. This action cannot be undone."
+    }) }}
+
+    {# ── ACTIONS ── #}
+    <form method="post" action="/admin-egress/summary">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: "Confirm and transfer"
+        }) }}
+        {{ govukButton({
+          text: "Cancel",
+          classes: "govuk-button--secondary",
+          href: "/admin-egress/pull"
+        }) }}
+      </div>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}

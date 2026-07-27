@@ -1,0 +1,395 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Data pulled from Zendesk – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-egress") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Data pulled from Zendesk</h1>
+    
+ 
+
+    {# ── NEW LEARNERS ── #}
+    {% set newLearnersHtml %}
+      <h2 class="govuk-heading-m">New learners</h2>
+      <div style="overflow-x: auto;">
+        <table class="govuk-table" style="min-width: 1400px; font-size: 14px;">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Ticket ID</th>
+              <th class="govuk-table__header">Correction type</th>
+              <th class="govuk-table__header">Key stage</th>
+              <th class="govuk-table__header">DfE Establishment Number</th>
+              <th class="govuk-table__header">Surname</th>
+              <th class="govuk-table__header">Middle name</th>
+              <th class="govuk-table__header">Forename</th>
+              <th class="govuk-table__header">Sex</th>
+              <th class="govuk-table__header">Date of birth</th>
+              <th class="govuk-table__header">Admission date</th>
+              <th class="govuk-table__header">Post code</th>
+              <th class="govuk-table__header">Cycle year</th>
+              <th class="govuk-table__header">Cycle month</th>
+              <th class="govuk-table__header">LA number</th>
+              <th class="govuk-table__header">School URN</th>
+              <th class="govuk-table__header">ULN</th>
+              <th class="govuk-table__header">UPN 2 (CYPMD)</th>
+              <th class="govuk-table__header">LDS matched pupil ID</th>
+              <th class="govuk-table__header">Pupil year group (CYPMD)</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">69390</td>
+              <td class="govuk-table__cell">10_new_learner</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">8815412</td>
+              <td class="govuk-table__cell">Lennox</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Annie</td>
+              <td class="govuk-table__cell">F</td>
+              <td class="govuk-table__cell">09/07/2010</td>
+              <td class="govuk-table__cell">2018-09-04</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">136412</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">25455548</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">69582</td>
+              <td class="govuk-table__cell">10_new_learner</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">8815412</td>
+              <td class="govuk-table__cell">Poppins</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Mary</td>
+              <td class="govuk-table__cell">F</td>
+              <td class="govuk-table__cell">09/07/2010</td>
+              <td class="govuk-table__cell">2018-09-04</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">136412</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">25455548</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">69693</td>
+              <td class="govuk-table__cell">20_</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">2118065</td>
+              <td class="govuk-table__cell">Pan</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Peter</td>
+              <td class="govuk-table__cell">M</td>
+              <td class="govuk-table__cell">24/07/2010</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">130418</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">0</td>
+              <td class="govuk-table__cell">26181848</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">70984</td>
+              <td class="govuk-table__cell">21_</td>
+              <td class="govuk-table__cell">16-18</td>
+              <td class="govuk-table__cell">8604083</td>
+              <td class="govuk-table__cell">Keegan</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Kevin</td>
+              <td class="govuk-table__cell">M</td>
+              <td class="govuk-table__cell">23/01/2009</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">51368833</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">766182086</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">74605</td>
+              <td class="govuk-table__cell">11_</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">8715402</td>
+              <td class="govuk-table__cell">Cruise</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Tom</td>
+              <td class="govuk-table__cell">M</td>
+              <td class="govuk-table__cell">2009-01-24</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">524534704</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">205860046</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">88406</td>
+              <td class="govuk-table__cell">10_</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Tree</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Apple</td>
+              <td class="govuk-table__cell">M</td>
+              <td class="govuk-table__cell">2011-03-13</td>
+              <td class="govuk-table__cell">2026-01-01</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">88407</td>
+              <td class="govuk-table__cell">30_</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">3735401</td>
+              <td class="govuk-table__cell">Kelly</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Grace Lily</td>
+              <td class="govuk-table__cell">F</td>
+              <td class="govuk-table__cell">2009-10-12</td>
+              <td class="govuk-table__cell">2020-09-03</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">464464776</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">10</td>
+              <td class="govuk-table__cell">472691443</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">88668</td>
+              <td class="govuk-table__cell">10_</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">9357022</td>
+              <td class="govuk-table__cell">Potato</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Jacket</td>
+              <td class="govuk-table__cell">F</td>
+              <td class="govuk-table__cell">2009-01-01</td>
+              <td class="govuk-table__cell">2015-01-01</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">88739</td>
+              <td class="govuk-table__cell">31_</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">87154054</td>
+              <td class="govuk-table__cell">Vorderman</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">Carole</td>
+              <td class="govuk-table__cell">F</td>
+              <td class="govuk-table__cell">2009-05-22</td>
+              <td class="govuk-table__cell">2020-09-02</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">524534704</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">469828156</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    {% endset %}
+
+    {# ── REMOVE LEARNERS ── #}
+    {% set removeLearnersHtml %}
+      <h2 class="govuk-heading-m">Remove learners</h2>
+      <div style="overflow-x: auto;">
+        <table class="govuk-table" style="min-width: 1200px; font-size: 14px;">
+          <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+              <th class="govuk-table__header">Ticket ID</th>
+              <th class="govuk-table__header">Correction type</th>
+              <th class="govuk-table__header">Correction reason (30)</th>
+              <th class="govuk-table__header">Correction reason (31)</th>
+              <th class="govuk-table__header">Key stage</th>
+              <th class="govuk-table__header">DfE Establishment Number</th>
+              <th class="govuk-table__header">Decision Status</th>
+              <th class="govuk-table__header">Cycle year</th>
+              <th class="govuk-table__header">Cycle month</th>
+              <th class="govuk-table__header">LA number</th>
+              <th class="govuk-table__header">LDS matched pupil ID</th>
+              <th class="govuk-table__header">Year group</th>
+              <th class="govuk-table__header">CYPMD_ID</th>
+              <th class="govuk-table__header">Unique Pupil Number (CYPMD)</th>
+            </tr>
+          </thead>
+          <tbody class="govuk-table__body">
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">1607623</td>
+              <td class="govuk-table__cell">31_</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">3_31</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">8855401</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--red">Rejected</strong></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">28270699</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">40115</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">1607857</td>
+              <td class="govuk-table__cell">31_</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">17_31</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">8664087</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--yellow">Scrutiny</strong></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">29675246</td>
+              <td class="govuk-table__cell">13</td>
+              <td class="govuk-table__cell">40092</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">1607626</td>
+              <td class="govuk-table__cell">31_</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">502_31</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">8855401</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--red">Auto Rejected</strong></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">29436572</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">40085</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">1607634</td>
+              <td class="govuk-table__cell">30_</td>
+              <td class="govuk-table__cell">17_30</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">8006009</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Auto Approved</strong></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">60579175</td>
+              <td class="govuk-table__cell">10</td>
+              <td class="govuk-table__cell">40071</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+            <tr class="govuk-table__row">
+              <td class="govuk-table__cell">1607873</td>
+              <td class="govuk-table__cell">31_</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">500_31</td>
+              <td class="govuk-table__cell">KS4</td>
+              <td class="govuk-table__cell">8956008</td>
+              <td class="govuk-table__cell"><strong class="govuk-tag govuk-tag--green">Approved</strong></td>
+              <td class="govuk-table__cell">2026</td>
+              <td class="govuk-table__cell">6</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">28808301</td>
+              <td class="govuk-table__cell"></td>
+              <td class="govuk-table__cell">40097</td>
+              <td class="govuk-table__cell"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    {% endset %}
+
+    {# ── GOVUK TABS ── #}
+    {{ govukTabs({
+      items: [
+        {
+          label: "New learners",
+          id: "new-learners",
+          panel: { html: newLearnersHtml }
+        },
+        {
+          label: "Remove learners",
+          id: "remove-learners",
+          panel: { html: removeLearnersHtml }
+        }
+      ]
+    }) }}
+
+    {# ── ACTIONS ── #}
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: "Proceed to preprocessing",
+        href: "/admin-egress/preprocessing"
+      }) }}
+      {{ govukButton({
+        text: "Cancel",
+        classes: "govuk-button--secondary",
+        href: "/admin-egress/pull"
+      }) }}
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

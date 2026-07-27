@@ -1,0 +1,80 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Data egress – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("data-egress") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Data egress</h1>
+  
+
+    <form method="post" action="/admin-egress/pull">
+      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
+
+      {# ── SECTION 1: Checking window ── #}
+      {{ govukSelect({
+        id: "checkingWindow",
+        name: "checkingWindow",
+        label: {
+          text: "1. Select a checking window",
+          classes: "govuk-label--s"
+        },
+        hint: {
+          text: "Choose the checking window you want to export data for."
+        },
+        items: [
+          { value: "",                text: "Select a checking window" },
+          { value: "KS4-JUNE-2026",   text: "KS4 June 2026" },
+          { value: "KS4-AUTUMN-2026", text: "KS4 Autumn 2026" },
+          { value: "KS2-2026",        text: "KS2 2026" },
+          { value: "16-18-2026",      text: "16-18 2026" }
+        ]
+      }) }}
+
+      {# ── SECTION 2: Data types ── #}
+      {{ govukCheckboxes({
+        name: "dataTypes",
+        fieldset: {
+          legend: {
+            text: "2. Select data to pull from Zendesk",
+            classes: "govuk-fieldset__legend--s"
+          }
+        },
+        hint: {
+          text: "Select one or more output types to retrieve."
+        },
+        items: [
+          { value: "new-learners",    text: "New learners" },
+          { value: "remove-learners", text: "Remove learners" }
+        ]
+      }) }}
+
+      {{ govukButton({
+        text: "Pull data from Zendesk"
+      }) }}
+
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}
