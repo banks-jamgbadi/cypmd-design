@@ -56,11 +56,6 @@
             {% if activeLink == 'data-publication' %}admin-sidebar__sub-link--active{% endif %}"
             href="/admin-publication">Data publication</a>
         </li>
-        <li>
-          <a class="govuk-link admin-sidebar__sub-link
-            {% if activeLink == 'audit-log' %}admin-sidebar__sub-link--active{% endif %}"
-            href="/admin-publication/audit-log">Audit log</a>
-        </li>
       </ul>
     </li>
 
@@ -68,9 +63,29 @@
     <li class="admin-sidebar__item">
       <span class="admin-sidebar__toggle">
         <span class="admin-sidebar__icon">+</span>
+        <a class="govuk-link admin-sidebar__link-text" href="/admin-egress/pull">Data egress</a>
+      </span>
+      <ul class="admin-sidebar__sub-list">
+        <li>
+          <a class="govuk-link admin-sidebar__sub-link
+            {% if activeLink == 'data-egress' %}admin-sidebar__sub-link--active{% endif %}"
+            href="/admin-egress/pull">Start a new egress</a>
+        </li>
+        <li>
+          <a class="govuk-link admin-sidebar__sub-link
+            {% if activeLink == 'egress-runs' %}admin-sidebar__sub-link--active{% endif %}"
+            href="/admin-egress/runs">Egress runs</a>
+        </li>
+      </ul>
+    </li>
+
+    {# Audit log #}
+    <li class="admin-sidebar__item">
+      <span class="admin-sidebar__toggle">
+        <span class="admin-sidebar__icon">+</span>
         <a class="govuk-link admin-sidebar__link-text
-          {% if activeLink == 'data-egress' %}admin-sidebar__sub-link--active{% endif %}"
-          href="/admin-egress/pull">Data egress</a>
+          {% if activeLink == 'audit-log' %}admin-sidebar__sub-link--active{% endif %}"
+          href="/audit-log">Audit log</a>
       </span>
     </li>
 

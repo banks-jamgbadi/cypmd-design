@@ -1,0 +1,120 @@
+{% extends "layouts/main.html" %}
+{% from "layouts/_admin-sidebar.html" import adminSidebar %}
+
+{% block pageTitle %}
+  Egress runs – {{ serviceName }} – GOV.UK Prototype Kit
+{% endblock %}
+
+{% block beforeContent %}
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
+{% endblock %}
+
+{% block content %}
+
+<div class="govuk-grid-row">
+
+  {# ── LEFT SIDEBAR ── #}
+  <div class="govuk-grid-column-one-quarter">
+    {{ adminSidebar("egress-runs") }}
+  </div>
+
+  {# ── MAIN CONTENT ── #}
+  <div class="govuk-grid-column-three-quarters">
+
+    <h1 class="govuk-heading-xl">Egress runs</h1>
+    <p class="govuk-body">A history of all data egress runs. This view is read-only.</p>
+
+    {# ── FILTERS ── #}
+    <div class="govuk-grid-row govuk-!-margin-bottom-4">
+      <div class="govuk-grid-column-one-half">
+        {{ govukSelect({
+          id: "filter-window",
+          name: "filterWindow",
+          label: { text: "Filter by checking window" },
+          items: [
+            { value: "",           text: "All windows", selected: true },
+            { value: "ks4-june",   text: "KS4 June 2026" },
+            { value: "ks4-autumn", text: "KS4 Autumn 2026" },
+            { value: "ks2",        text: "KS2 2026" },
+            { value: "16-18",      text: "16-18 2026" }
+          ]
+        }) }}
+      </div>
+      <div class="govuk-grid-column-one-half">
+        {{ govukSelect({
+          id: "filter-status",
+          name: "filterStatus",
+          label: { text: "Filter by status" },
+          items: [
+            { value: "",        text: "All statuses", selected: true },
+            { value: "success", text: "Success" },
+            { value: "failed",  text: "Failed" }
+          ]
+        }) }}
+      </div>
+    </div>
+
+    {# ── RUNS TABLE ── #}
+    {{ govukTable({
+      head: [
+        { text: "Checking window" },
+        { text: "Output types" },
+        { text: "Records", format: "numeric" },
+        { text: "Run by" },
+        { text: "Time" }
+      ],
+      rows: [
+        [
+          { html: 'KS4 June 2026<br><strong class="govuk-tag govuk-tag--green govuk-!-margin-top-1">Success</strong>' },
+          { html: '<strong class="govuk-tag govuk-tag--blue">New learners</strong> <strong class="govuk-tag govuk-tag--blue">Remove learners</strong>' },
+          { text: "60", format: "numeric" },
+          { text: "Banks Jamgbadi" },
+          { html: "8 Jun 2026<br><span class='govuk-body-s' style='color:#505A5F;'>14:38:02 UTC</span>" }
+        ],
+        [
+          { html: 'KS4 June 2026<br><strong class="govuk-tag govuk-tag--green govuk-!-margin-top-1">Success</strong>' },
+          { html: '<strong class="govuk-tag govuk-tag--blue">Remove learners</strong>' },
+          { text: "13", format: "numeric" },
+          { text: "Banks Jamgbadi" },
+          { html: "2 Jun 2026<br><span class='govuk-body-s' style='color:#505A5F;'>09:12:44 UTC</span>" }
+        ],
+        [
+          { html: 'KS2 2026<br><strong class="govuk-tag govuk-tag--red govuk-!-margin-top-1">Failed</strong>' },
+          { html: '<strong class="govuk-tag govuk-tag--blue">New learners</strong>' },
+          { text: "0", format: "numeric" },
+          { text: "Banks Jamgbadi" },
+          { html: "28 May 2026<br><span class='govuk-body-s' style='color:#505A5F;'>10:15:20 UTC</span>" }
+        ],
+        [
+          { html: 'KS2 2026<br><strong class="govuk-tag govuk-tag--green govuk-!-margin-top-1">Success</strong>' },
+          { html: '<strong class="govuk-tag govuk-tag--blue">New learners</strong> <strong class="govuk-tag govuk-tag--blue">Remove learners</strong>' },
+          { text: "142", format: "numeric" },
+          { text: "Banks Jamgbadi" },
+          { html: "20 May 2026<br><span class='govuk-body-s' style='color:#505A5F;'>09:00:12 UTC</span>" }
+        ],
+        [
+          { html: '16-18 2026<br><strong class="govuk-tag govuk-tag--green govuk-!-margin-top-1">Success</strong>' },
+          { html: '<strong class="govuk-tag govuk-tag--blue">Remove learners</strong>' },
+          { text: "27", format: "numeric" },
+          { text: "Banks Jamgbadi" },
+          { html: "14 May 2026<br><span class='govuk-body-s' style='color:#505A5F;'>11:30:05 UTC</span>" }
+        ]
+      ]
+    }) }}
+
+    {# ── PAGINATION ── #}
+    {{ govukPagination({
+      next: { href: "?page=2" },
+      items: [
+        { number: 1, href: "?page=1", current: true },
+        { number: 2, href: "?page=2" }
+      ]
+    }) }}
+
+  </div>
+</div>
+
+{% endblock %}
