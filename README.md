@@ -32,6 +32,70 @@ If you are running this on a Windows machine, PowerShell or Command Prompt will 
 - `npm run serve` - serve the prototype
 - `npm run start` - start the prototype
 
+## Deploy to Heroku
+
+These are the steps that worked for this project and are the ones to reuse.
+
+### 1. Log in to Heroku
+
+If your machine is behind a corporate SSL inspection or proxy, disable certificate rejection for the CLI session before logging in:
+
+```powershell
+$env:NODE_TLS_REJECT_UNAUTHORIZED = "0"
+heroku login
+```
+
+Check the logged in account:
+
+```powershell
+heroku whoami
+```
+
+### 2. Create the app
+
+If the account is not verified, Heroku will block app creation until payment verification is completed. In that case, you need to complete the verification in the Heroku dashboard before continuing.
+
+```powershell
+heroku create cypmd-design
+```
+
+If the app already exists, attach the remote without creating a new one:
+
+```powershell
+heroku git:remote -a cypmd-design
+```
+
+### 3. Set app config
+
+```powershell
+heroku config:set NODE_ENV=production --app cypmd-design
+heroku config:set PASSWORD=your-pass --app cypmd-design
+```
+
+### 4. Commit and deploy
+
+```powershell
+git status
+git add .
+git commit -m "Add Heroku config"
+git push heroku main
+```
+
+If the default branch is `master`, use:
+
+```powershell
+git push heroku master
+```
+
+### 5. Check the app
+
+```powershell
+heroku open
+heroku logs --tail
+```
+
+> Note: `NODE_TLS_REJECT_UNAUTHORIZED=0` is a temporary workaround for local SSL trust issues and should only be used for development/testing in a trusted environment.
+
 ## Prototype navigation
 
 The prototype is organised around a few main journeys. You can open these pages directly in the browser once the local server is running.
