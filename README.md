@@ -53,7 +53,6 @@ heroku whoami
 
 ### 2. Create the app
 
-If the account is not verified, Heroku will block app creation until payment verification is completed. In that case, you need to complete the verification in the Heroku dashboard before continuing.
 
 ```powershell
 heroku create cypmd-design
