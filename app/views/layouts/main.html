@@ -4,3 +4,27 @@ https://prototype-kit.service.gov.uk/docs/how-to-use-layouts
 #}
 
 {% extends "govuk-prototype-kit/layouts/govuk-branded.njk" %}
+
+{% block govukServiceNavigation %}
+  {{ govukServiceNavigation({
+    serviceName: serviceName,
+    navigation: [
+      {
+        href: "/home",
+        text: "Home"
+      },
+      {
+        href: "/amendment-requests",
+        text: "Amendment requests"
+      },
+      {
+        href: "/guidance",
+        text: "Guidance"
+      },
+      {
+        href: "/admin-dashboard",
+        text: "Admin"
+      }
+    ]
+  }) }}
+{% endblock %}

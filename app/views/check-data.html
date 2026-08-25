@@ -1,22 +1,14 @@
 {% extends "layouts/main.html" %}
 
 {% block pageTitle %}
-Check your pupil data – {{ serviceName }} – GOV.UK Prototype Kit
+  Check your student data – {{ serviceName }} – GOV.UK Prototype Kit
 {% endblock %}
 
 {% block beforeContent %}
-{{ govukPhaseBanner({
-tag: { text: "Alpha" },
-html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
-}) }}
-<div class="govuk-breadcrumbs">
-  <ol class="govuk-breadcrumbs__list">
-    <li class="govuk-breadcrumbs__list-item">
-      <a class="govuk-breadcrumbs__link" href="/">Home</a>
-    </li>
-  </ol>
-  <a class="govuk-link" href="/sign-out" style="float: right; margin-top: -28px;">Sign out</a>
-</div>
+  {{ govukPhaseBanner({
+    tag: { text: "Alpha" },
+    html: 'This is a new service – <a class="govuk-link" href="/feedback">your feedback</a> will help us to improve it.'
+  }) }}
 {% endblock %}
 
 {% block content %}
@@ -24,144 +16,145 @@ html: 'This is a new service – <a class="govuk-link" href="/feedback">your fee
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-full">
 
-    <h1 class="govuk-heading-xl">Check your pupil data</h1>
+    <h1 class="govuk-heading-xl">Check your student data</h1>
+    <p class="govuk-body">Review your student data by checking the table below. You can also download the data as a CSV file. You must request any amendments to student data before 5pm on Friday 26 June 2026.</p>
 
     <p class="govuk-body">
-      Review your pupil data by checking the table below. You can also download the data as a CSV file. You must request
-      any amendments to pupil data before 5pm on Friday 26 June 2026.
+      <a class="govuk-link" href="/download-all-csv">Download all CSV files as a ZIP file</a>
     </p>
 
-    <p class="govuk-body">
-      <a class="govuk-link govuk-!-font-weight-bold" href="/download/all">Download all CSV files as a ZIP file</a>
-    </p>
+    {% set studentsHtml %}
+      
 
-    {# Tabs #}
-    <div class="govuk-tabs" data-module="govuk-tabs">
-      <ul class="govuk-tabs__list">
-        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-          <a class="govuk-tabs__tab" href="#pupil-included">Pupil included</a>
-        </li>
-        <li class="govuk-tabs__list-item">
-          <a class="govuk-tabs__tab" href="#pupil-non-included">Pupil non-included</a>
-        </li>
-      </ul>
+      <form method="get" action="/check-data/students">
+        <input type="hidden" name="tab" value="students">
+        {{ govukSelect({
+          id: "dataset",
+          name: "dataset",
+          classes:  "govuk-!-width-one-half",
+          label: {
+            text: "Select the data you want to view",
+            classes: "govuk-label--s"
+          },
+          items: [
+            { value: "included",     text: "Students included",     selected: (datasetKey == "included" or not datasetKey) },
+            { value: "non-included", text: "Students non-included", selected: (datasetKey == "non-included") },
+            { value: "previously-published", text: "Previously published", selected: (datasetKey == "previously-published") }
+          ],
+          attributes: { onchange: "this.form.submit()" }
+        }) }}
+      </form>
 
-      {# ── PUPIL INCLUDED ── #}
-      <div class="govuk-tabs__panel" id="pupil-included">
+      <p class="govuk-body govuk-!-margin-bottom-2">
+        Download <a class="govuk-link" href="/download-csv/students-included">students included</a> as a CSV file.
+      </p>
+      <p class="govuk-body govuk-!-margin-bottom-2">
+        Download <a class="govuk-link" href="/download-csv/students-non-included">students non-included</a> as a CSV file.
+      </p>
+      <p class="govuk-body govuk-!-margin-bottom-6">
+        Download <a class="govuk-link" href="/download-csv/previously-published">previously published</a> as a CSV file.
+      </p>
 
-        <!-- <h2 class="govuk-heading-m">Pupil included</h2> -->
 
-        <p class="govuk-body">
-          <a href="/download-pupil-incl" role="button" draggable="false" class="govuk-button"
-            data-module="govuk-button">
-            Download pupil included
-          </a>
-          <!-- Download <a class="govuk-link" href="/download/pupil-included">pupil included</a> as a CSV file. -->
-        </p>
+      <h2 class="govuk-heading-m">{{ dataset.title }}</h2>
 
-        <div class="govuk-form-group">
-          <label class="govuk-label" for="search-included">
-            Search for a pupil by first or last name
-          </label>
-          <div style="display: flex; gap: 10px; align-items: flex-end;">
-            <input class="govuk-input" id="search-included" name="searchIncluded" type="text" style="max-width: 20em;">
-            <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">Search</button>
-          </div>
+      <div class="govuk-form-group" style="background-color: #f3f2f1; padding: 20px; margin-bottom: 30px;">
+        <label class="govuk-label govuk-label--s" for="search-students">
+          Search for a student by first or last name
+        </label>
+        <div style="display: flex; gap: 0;">
+          <input class="govuk-input" id="search-students" name="searchStudents" type="text" style="max-width: 20em;">
+          {{ govukButton({
+            text: "Search",
+            classes: "govuk-!-margin-bottom-0",
+            attributes: { style: "margin-left: 10px;" }
+          }) }}
         </div>
+      </div>
 
-        {{ govukTable({
+      {% set tableRows = [] %}
+      {% for row in dataset.rows %}
+        {% set tableRows = (tableRows.push([
+          { text: row.lastName },
+          { text: row.firstName },
+          { text: row.sex },
+          { text: row.dob },
+          { text: row.age | string },
+          { text: row.cypmdId },
+          { text: row.subject }
+        ]), tableRows) %}
+      {% endfor %}
+
+      {{ govukTable({
         head: [
-        { text: "Last name" },
-        { text: "First name" },
-        { text: "Sex" },
-        { text: "Date of birth" },
-        { text: "Age" },
-        { text: "CYPMD ID" }
+          { text: "Last name" },
+          { text: "First name" },
+          { text: "Sex" },
+          { text: "Date of birth" },
+          { text: "Age" },
+          { text: "CYPMD ID" },
+          { text: "Subject" }
         ],
-        rows: [
-        [{ text: "Maguire" }, { text: "Harry" }, { text: "M" }, { text: "1/1/2009" }, { text: "15" }, { text: "1234567"
-        }],
-        [{ text: "Stones" }, { text: "John" }, { text: "M" }, { text: "1/2/2009" }, { text: "15" }, { text: "1234567"
-        }],
-        [{ text: "Shaw" }, { text: "Luke" }, { text: "M" }, { text: "1/3/2009" }, { text: "15" }, { text: "1234567" }],
-        [{ text: "Mainoo" }, { text: "Kobbie" }, { text: "M" }, { text: "1/4/2009" }, { text: "15" }, { text: "1234567"
-        }],
-        [{ text: "Rice" }, { text: "Declan" }, { text: "M" }, { text: "1/5/2009" }, { text: "15" }, { text: "1234567"
-        }],
-        [{ text: "Bellingham" }, { text: "Jude" }, { text: "M" }, { text: "1/6/2009" }, { text: "15" }, { text:
-        "1234567" }],
-        [{ text: "Foden" }, { text: "Phil" }, { text: "M" }, { text: "1/7/2009" }, { text: "15" }, { text: "1234567" }],
-        [{ text: "Bowen" }, { text: "Jarrod" }, { text: "M" }, { text: "1/8/2009" }, { text: "15" }, { text: "1234567"
-        }],
-        [{ text: "Trent" }, { text: "Alexander-Arnold" },{ text: "M" }, { text: "1/9/2009" }, { text: "15" }, { text:
-        "1234567" }],
-        [{ text: "Grealish" }, { text: "Jack" }, { text: "M" }, { text: "1/10/2009" }, { text: "15" }, { text: "1234567"
-        }]
-        ]
-        }) }}
-
-        {{ govukPagination({
-        previous: { href: "?page=1" },
-        next: { href: "?page=3" },
-        items: [
-        { number: 1, href: "?page=1" },
-        { number: 2, href: "?page=2", current: true },
-        { number: 3, href: "?page=3" }
-        ]
-        }) }}
-
-      </div>
-
-      {# ── PUPIL NON-INCLUDED ── #}
-      <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="pupil-non-included">
-
-        <h2 class="govuk-heading-m">Pupil non-included</h2>
-
-        <p class="govuk-body">
-          Download <a class="govuk-link" href="/download/pupil-non-included">pupil non-included</a> as a CSV file.
-        </p>
-
-        <div class="govuk-form-group">
-          <label class="govuk-label" for="search-non-included">
-            Search for a pupil by first or last name
-          </label>
-          <div style="display: flex; gap: 10px; align-items: flex-end;">
-            <input class="govuk-input" id="search-non-included" name="searchNonIncluded" type="text"
-              style="max-width: 20em;">
-            <button class="govuk-button govuk-!-margin-bottom-0" data-module="govuk-button">Search</button>
-          </div>
-        </div>
-
-        {# Replace with govukTable macro and rows when non-included data is available #}
-        <p class="govuk-body">No pupils to display.</p>
-
-      </div>
-    </div>
-
-    {# ── WHAT WOULD YOU LIKE TO DO ── #}
-    <form method="post" action="/check-data">
-      <input type="hidden" name="_csrf" value="{{ csrfToken }}">
-
-      {{ govukRadios({
-      name: "action",
-      fieldset: {
-      legend: {
-      text: "What would you like to do?",
-      classes: "govuk-fieldset__legend--l"
-      }
-      },
-      hint: { text: "Select one option" },
-      items: [
-      { value: "request-amendment", text: "Request amendments to pupil data" },
-      { value: "confirm-correct", text: "Confirm pupil data is correct" }
-      ]
+        rows: tableRows
       }) }}
 
-      {{ govukButton({ text: "Continue" }) }}
+      {{ govukPagination({
+        previous: { href: "?page=1&dataset=" + datasetKey },
+        next: { href: "?page=3&dataset=" + datasetKey },
+        items: [
+          { number: 1, href: "?page=1&dataset=" + datasetKey },
+          { number: 2, href: "?page=2&dataset=" + datasetKey, current: true },
+          { number: 3, href: "?page=3&dataset=" + datasetKey }
+        ]
+      }) }}
+    {% endset %}
 
-    </form>
+    {% set resultsHtml %}
+      <h2 class="govuk-heading-m">Results</h2>
+      <p class="govuk-body">Results data placeholder.</p>
+    {% endset %}
+
+    {% set lateResultsHtml %}
+      <h2 class="govuk-heading-m">Late results</h2>
+      <p class="govuk-body">Late results data placeholder.</p>
+    {% endset %}
+
+    {% set campusHtml %}
+      <h2 class="govuk-heading-m">Campus</h2>
+      <p class="govuk-body">Campus data placeholder.</p>
+    {% endset %}
+
+    {% set summaryHtml %}
+      <h2 class="govuk-heading-m">Summary</h2>
+      <p class="govuk-body">Summary data placeholder.</p>
+    {% endset %}
+
+    {{ govukTabs({
+      items: [
+        { label: "Summary", id: "summary", panel: { html: summaryHtml } },
+        { label: "Students", id: "students", panel: { html: studentsHtml }, attributes: { "data-active": (activeTab == "students") } },
+        { label: "Results", id: "results", panel: { html: resultsHtml } },
+        { label: "Late results", id: "late-results", panel: { html: lateResultsHtml } },
+        { label: "Campus", id: "campus", panel: { html: campusHtml } }
+      ]
+    }) }}
 
   </div>
 </div>
 
+{% endblock %}
+
+{% block pageScripts %}
+<script>
+  // Keep the Students tab open after the dropdown reloads the page
+  (function () {
+    var params = new URLSearchParams(window.location.search);
+    if (params.get("tab") === "students") {
+      var studentsTabLink = document.querySelector('a[href="#students"]');
+      if (studentsTabLink) {
+        studentsTabLink.click();
+      }
+    }
+  })();
+</script>
 {% endblock %}

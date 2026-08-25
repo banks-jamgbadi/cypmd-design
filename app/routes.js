@@ -69,3 +69,11 @@ router.post('/admin-egress/summary', (req, res) => {
 router.post('/admin-egress/summary', (req, res) => {
   res.redirect('/admin-egress/complete')
 })
+
+const studentsData = require('../data/students-data')
+
+router.get('/check-data/students', (req, res) => {
+  const datasetKey = req.query.dataset || 'included'
+  const dataset = studentsData[datasetKey]
+  res.render('check-data', { dataset, datasetKey })
+})
